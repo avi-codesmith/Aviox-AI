@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
 * {
   margin: 0;
   padding: 0;
@@ -17,7 +18,7 @@ body {
 }
 
 .loader {
-  background-color: #ffffff85;
+  background-color: #fff;
   height: 100vh;
   width: 100vw;
   position: absolute;
@@ -26,17 +27,59 @@ body {
   align-items: center;
   justify-content: center;
   pointer-events: none;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+  z-index: 999;
+}
+
+.loader img {
+  animation: round 2s ease-in-out;
+  height: 12rem;
+  width: 12rem;
+}
+
+@keyframes round {
+  0% {
+    transform: rotate(0deg) scale(0.7);
+  }
+  100% {
+    transform: rotate(360deg) scale(1.2);
+  }
 }
 
 .container {
   display: grid;
-  grid-template-columns: 20vw auto;
+  grid-template-columns: 20vw 80vw;
+  position: relative;
+  width: 100vw;
+  transition: grid-template-columns 0.3s ease;
+}
+
+.container.jump {
+  grid-template-columns: 0 100vw;
 }
 
 .nav {
-  background-color: #ddd;
+  background-color: #fdfdfd;
   height: 100vh;
+  padding: 2rem;
+  width: 20vw;
+  transition: 0.3s ease;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ham {
+  cursor: pointer;
+}
+
+.header img {
+  height: 3.2rem;
+  width: 3.2rem;
 }
 
 .main {
@@ -48,6 +91,32 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  transition: position 3s ease;
+  position: relative;
+}
+
+.main::after {
+  content: "Copyright © 2025 </> and Desinged by Avi-codesmith";
+  position: absolute;
+  bottom: 2%;
+  font-size: 1.4rem;
+  color: #444;
+}
+
+.d-hidden {
+  position: absolute;
+  top: 2%;
+  left: 2%;
+  opacity: 0;
+  transition: all 0.1s ease;
+}
+
+.d-hidden.opacity {
+  opacity: 1;
+}
+
+.d-hidden .ham {
+  margin-right: 4rem;
 }
 
 .chat-box {
@@ -57,6 +126,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  margin-bottom: 4rem;
 }
 
 .bot {
@@ -71,18 +141,35 @@ body {
   display: none;
 }
 
+.message {
+  max-width: 20vw;
+  word-wrap: break-word;
+}
+
 .text {
-  font-size: 1.4rem;
+  font-size: 1.8rem;
+  font-weight: 500;
   padding: 1rem 2rem;
+  width: 100%;
+  color: #333;
+}
+
+.user {
+  background-color: #e8e3e3;
   border-radius: 2rem;
 }
 
-.bg {
-  background-color: #dfdfdf;
+.bot {
+  background-color: #fff;
+  border-radius: 2rem;
 }
 
-.bg2 {
-  background-color: #fff;
+.bot:nth-child(1) {
+  border-radius: 0 2rem 2rem 2rem;
+}
+
+.user:last-child {
+  border-radius: 2rem 2rem 0 2rem;
 }
 
 form {
@@ -96,14 +183,17 @@ form {
   width: 50%;
   box-shadow: 1px 10px 12px #ddd;
   border: 0.5px solid #ddd;
+  cursor: text;
 }
 
 textarea {
   background-color: transparent;
   width: 100%;
+  height: 2.4rem;
   color: #111;
   font-size: 1.6rem;
   font-family: "Poppins";
+  resize: none;
 }
 
 .btn-wrapper {
@@ -112,14 +202,25 @@ textarea {
   gap: 2rem;
 }
 
+.black {
+  background-color: #111 !important;
+  height: 4rem !important;
+  width: 4rem !important;
+}
+
 .btn {
-  height: 3rem;
-  width: 3rem;
+  height: 4rem;
+  width: 4rem;
   background-color: #f1f1f1;
-  border-radius: 50%;
+  border-radius: 100%;
 }
 
 .btn img {
-  height: 70%;
-  width: 70%;
+  height: 60%;
+  width: 60%;
+}
+
+.btn:hover {
+  background-color: #ddd;
+  cursor: pointer;
 }

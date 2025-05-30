@@ -5,15 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
     <title>Aviox AI | Free AI Chatbot</title>
-    <link rel="icon" href="logo.png" />
+    <link rel="icon" href="icons/logo.svg" />
   </head>
   <body>
     <div class="loader">
-      <img src="logo.png" alt="loader Icon" />
+      <img src="icons/logo.svg" alt="loader Icon" />
     </div>
     <div class="container">
-      <div class="nav"></div>
+      <!-- <div class="new">
+        
+      </div> -->
+      <div class="nav">
+        <div class="header">
+          <a href="#">
+            <img src="icons/logo.svg" alt="logo" />
+          </a>
+          <img src="icons/ham.svg" alt="nav" class="ham" />
+        </div>
+      </div>
       <div class="main">
+        <div class="d-hidden">
+          <div class="header">
+            <img src="icons/ham.svg" alt="nav" class="ham" />
+            <a href="#">
+              <img src="icons/logo.svg" alt="logo" />
+            </a>
+          </div>
+        </div>
         <div class="chat-box">
           <div class="message bot">
             <div class="text bg2">
@@ -37,13 +55,13 @@
             <button class="link btn">
               <img src="icons/link.svg" />
             </button>
-            <button class="up btn">
+            <button class="up btn black">
               <img src="icons/up.svg" />
             </button>
           </div>
         </form>
       </div>
     </div>
+    <script src="app.js"></script>
   </body>
-  <script src="app.js"></script>
 </html>
