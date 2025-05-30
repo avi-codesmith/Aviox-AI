@@ -9,6 +9,8 @@ const chatBox = document.querySelector(".chat-box");
 const input = document.querySelector(".input");
 const form = document.querySelector("form");
 
+const ApiUrl =
+  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$GEMINI_API_KEY";
 window.addEventListener("load", () => {
   setTimeout(() => {
     loader.style.opacity = "0";
@@ -24,7 +26,7 @@ hamIcon.forEach((e) => {
 });
 
 const addDiv = () => {
-  const message = input.value.trim(); // remove extra spaces
+  const message = input.value.trim();
 
   if (message !== "") {
     const user = document.createElement("div");
@@ -39,6 +41,15 @@ const addDiv = () => {
 
     input.value = "";
 
+    const bot = document.createElement("div");
+    chatBox.appendChild(bot);
+
+    const botText = document.createElement("div");
+    bot.appendChild(botText);
+
+    bot.classList.add("message", "bot");
+    botText.classList.add("text", "bg2");
+
     chatBox.scrollTop = chatBox.scrollHeight;
   }
 };
@@ -52,5 +63,7 @@ up.addEventListener("click", addDiv);
 document.addEventListener("keyup", (e) => {
   if (e.key === "Enter") {
     addDiv();
+  } else if (e.key === "/") {
+    focus();
   }
 });
