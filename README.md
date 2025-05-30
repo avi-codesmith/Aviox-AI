@@ -1,6 +1,6 @@
 # 🤖 Aviox AI – Smart Chatbot
 
-![download](https://github.com/user-attachments/assets/41a7a025-1bd0-4a3a-b68d-ba457583bdfa)
+![chat-gpt](https://github.com/user-attachments/assets/728872a4-bb00-42d0-ba0b-7313e043a0cb)
 
 Aviox AI is an intelligent chatbot built to simulate natural conversations and assist users with information, tasks, or entertainment. Designed with a clean interface and responsive behavior, it’s hosted on Netlify and ready to use in your browser.
 
