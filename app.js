@@ -9,9 +9,9 @@ const chatBox = document.querySelector(".chat-box");
 const input = document.querySelector(".input");
 const form = document.querySelector("form");
 
-const apiUrl = "https://openrouter.ai/api/v1/chat/completions ";
+const apiUrl = "https://openrouter.ai/api/v1/chat/completions";
 const apiKey =
-  "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";
+  "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";
 
 window.addEventListener("load", () => {
   setTimeout(() => {
