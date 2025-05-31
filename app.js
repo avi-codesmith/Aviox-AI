@@ -11,13 +11,14 @@ const form = document.querySelector("form");
 
 const apiUrl = "https://openrouter.ai/api/v1/chat/completions";
 const apiKey =
-  "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";
+  "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";
 
 window.addEventListener("load", () => {
   setTimeout(() => {
     loader.style.opacity = "0";
     input.focus();
   }, 1000);
+  hamIcon[0].click();
 });
 
 hamIcon.forEach((e) => {
@@ -34,6 +35,8 @@ const getAnswer = async (message, botText) => {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
+        "HTTP-Referer": "https://yourdomain.com",
+        "X-Title": "My Chatbot App",
       },
       body: JSON.stringify({
         model: "mistralai/mistral-7b-instruct",
@@ -43,22 +46,18 @@ const getAnswer = async (message, botText) => {
 
     const data = await response.json();
 
-    if (!data.choices || !data.choices[0]) {
-      botText.textContent = "Error: Invalid API response. Check model/key.";
-      console.error("API response:", data);
-      return;
-    }
-
     const reply = data.choices[0].message.content;
-    botText.textContent = reply;
+    botText.textContent = reply.replace(/[*\/\\'`]/g, "").trim();
     chatBox.scrollTop = chatBox.scrollHeight;
   } catch (error) {
-    botText.textContent = "Error: Could not fetch response.";
-    console.error("Fetch error:", error);
+    botText.textContent = "404 Error : Something went wrong. Pls try again";
+    botText.classList.add("red");
   }
 };
 
 const addDiv = () => {
+  chatBox.classList.add("hide");
+
   const message = input.value.trim();
 
   if (message !== "") {
@@ -90,9 +89,10 @@ const focus = () => {
   input.focus();
 };
 
-form.addEventListener("submit", (e) => {
+form.addEventListener("click", (e) => {
   e.preventDefault();
   addDiv();
+  input.focus();
 });
 
 up.addEventListener("click", addDiv);
