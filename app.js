@@ -9,8 +9,10 @@ const chatBox = document.querySelector(".chat-box");
 const input = document.querySelector(".input");
 const form = document.querySelector("form");
 
-const ApiUrl =
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$GEMINI_API_KEY";
+const apiUrl = "https://openrouter.ai/api/v1/chat/completions";
+const apiKey =
+  "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";
+
 window.addEventListener("load", () => {
   setTimeout(() => {
     loader.style.opacity = "0";
@@ -25,16 +27,38 @@ hamIcon.forEach((e) => {
   });
 });
 
+const getAnswer = async (message, botText) => {
+  try {
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "openai/gpt-3.5-turbo",
+        messages: [{ role: "user", content: message }],
+      }),
+    });
+
+    const data = await response.json();
+    const reply = data.choices[0].message.content;
+    botText.textContent = reply;
+    chatBox.scrollTop = chatBox.scrollHeight;
+  } catch (error) {
+    botText.textContent = "Error: Could not fetch response.";
+    console.error(error);
+  }
+};
+
 const addDiv = () => {
   const message = input.value.trim();
 
   if (message !== "") {
     const user = document.createElement("div");
     chatBox.appendChild(user);
-
     const text = document.createElement("div");
     user.appendChild(text);
-
     user.classList.add("message", "user");
     text.classList.add("text", "bg");
     text.textContent = message;
@@ -43,14 +67,15 @@ const addDiv = () => {
 
     const bot = document.createElement("div");
     chatBox.appendChild(bot);
-
     const botText = document.createElement("div");
     bot.appendChild(botText);
-
     bot.classList.add("message", "bot");
     botText.classList.add("text", "bg2");
+    botText.textContent = "Thinking...";
 
     chatBox.scrollTop = chatBox.scrollHeight;
+
+    getAnswer(message, botText);
   }
 };
 
@@ -58,7 +83,10 @@ const focus = () => {
   input.focus();
 };
 
-form.addEventListener("click", focus);
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  addDiv();
+});
 up.addEventListener("click", addDiv);
 document.addEventListener("keyup", (e) => {
   if (e.key === "Enter") {
