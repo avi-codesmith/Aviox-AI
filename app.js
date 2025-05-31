@@ -11,7 +11,7 @@ const form = document.querySelector("form");
 
 const apiUrl = "https://openrouter.ai/api/v1/chat/completions";
 const apiKey =
-  "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";
+  "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";
 
 window.addEventListener("load", () => {
   setTimeout(() => {
