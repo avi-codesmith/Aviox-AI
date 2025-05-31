@@ -11,7 +11,7 @@ const form = document.querySelector("form");
 
 const apiUrl = "https://openrouter.ai/api/v1/chat/completions";
 const apiKey =
-  "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";
+  "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";
 
 window.addEventListener("load", () => {
   setTimeout(() => {
@@ -36,18 +36,25 @@ const getAnswer = async (message, botText) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "openai/gpt-3.5-turbo",
+        model: "mistralai/mistral-7b-instruct",
         messages: [{ role: "user", content: message }],
       }),
     });
 
     const data = await response.json();
+
+    if (!data.choices || !data.choices[0]) {
+      botText.textContent = "Error: Invalid API response. Check model/key.";
+      console.error("API response:", data);
+      return;
+    }
+
     const reply = data.choices[0].message.content;
     botText.textContent = reply;
     chatBox.scrollTop = chatBox.scrollHeight;
   } catch (error) {
     botText.textContent = "Error: Could not fetch response.";
-    console.error(error);
+    console.error("Fetch error:", error);
   }
 };
 
@@ -87,7 +94,9 @@ form.addEventListener("submit", (e) => {
   e.preventDefault();
   addDiv();
 });
+
 up.addEventListener("click", addDiv);
+
 document.addEventListener("keyup", (e) => {
   if (e.key === "Enter") {
     addDiv();
