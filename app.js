@@ -11,7 +11,7 @@ const form = document.querySelector("form");
 
 const apiUrl = "https://openrouter.ai/api/v1/chat/completions";
 const apiKey =
-  "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";
+  "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";
 
 window.addEventListener("load", () => {
   setTimeout(() => {
@@ -37,7 +37,7 @@ const getAnswer = async (message, botText) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "mistralai/mistral-7b-instruct",
+        model: "mistralai/devstral-small:free",
         messages: [
           {
             role: "user",
