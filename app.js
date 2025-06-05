@@ -36,7 +36,7 @@ window.addEventListener("load", () => {
     input.focus();
     heading.textContent = headings[random];
   }, 1000);
-  if (window.innerWidth <= 844) {
+  if (window.innerWidth >= 844) {
     hamIcon[0]?.click();
   }
 });

@@ -88,6 +88,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background-color: #181818;
+  border-radius: 1rem;
+  padding: 1rem;
 }
 
 .ham {
@@ -327,6 +330,9 @@ textarea {
   right: 2%;
   z-index: 9;
   cursor: pointer;
+  background-color: #181818;
+  border-radius: 1rem;
+  padding: 1rem;
 }
 
 .new img {
