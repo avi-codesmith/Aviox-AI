@@ -23,6 +23,7 @@ body {
   font-family: "Poppins";
   background-color: #121212;
   color: #e0e0e0;
+  overflow: hidden;
 }
 
 .loader {
@@ -36,7 +37,7 @@ body {
   justify-content: center;
   pointer-events: none;
   transition: all 0.2s ease;
-  z-index: 999;
+  z-index: 9999;
 }
 
 .loader img {
@@ -57,9 +58,10 @@ body {
 
 .container {
   display: grid;
-  grid-template-columns: 20vw 80vw;
+  grid-template-columns: 20vw auto;
   position: relative;
   width: 100vw;
+  height: 100vh;
   transition: grid-template-columns 0.3s ease;
 }
 
@@ -71,9 +73,14 @@ body {
   background-color: #1e1e1e;
   height: 100vh;
   padding: 2rem;
-  width: 20vw;
+  width: 100%;
   transition: 0.3s ease;
   overflow: hidden;
+  z-index: 999;
+}
+
+.padding {
+  padding: 0;
 }
 
 .header {
@@ -121,6 +128,9 @@ body {
 
 .transition {
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .his-box:hover {
@@ -183,13 +193,21 @@ body {
 }
 
 .chat-box {
-  width: 50%;
-  height: 60vh;
+  width: 100%;
+  height: 75vh;
   overflow-y: scroll;
   display: flex;
+  align-items: center;
   flex-direction: column;
   gap: 2rem;
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
+}
+
+.chat {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 .chat-box::-webkit-scrollbar {
@@ -207,6 +225,7 @@ body {
   background: linear-gradient(90deg, #777, #ddd);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  text-align: center;
 }
 
 .heading.hide {
@@ -319,4 +338,62 @@ textarea {
   background-color: #fa5252;
   color: #fff;
   border-radius: 0 2rem 2rem 2rem;
+}
+
+.dull {
+  height: 100vh;
+  width: 100vw;
+  background-color: red;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 9;
+  opacity: 1;
+  display: none;
+}
+
+.opacity2 {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 1440px) {
+  .container {
+    grid-template-columns: 30vw auto;
+  }
+  form {
+    width: 80%;
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 1052px) {
+  .container {
+    grid-template-columns: 40vw auto;
+  }
+}
+
+@media (max-width: 850px) {
+  .container {
+    grid-template-columns: 60vw auto;
+  }
+  .dull {
+    display: block;
+  }
+}
+
+@media (max-width: 500px) {
+  html {
+    font-size: 50%;
+  }
+  .container {
+    grid-template-columns: 90vw auto;
+  }
+  form {
+    flex-direction: column;
+  }
+  .btn-wrapper {
+    justify-content: space-around;
+    width: 100%;
+  }
 }

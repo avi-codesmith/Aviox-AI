@@ -5,15 +5,17 @@ const hamIcon = document.querySelectorAll(".ham");
 const container = document.querySelector(".container");
 const dHidden = document.querySelector(".d-hidden");
 const up = document.querySelector(".up");
-const chatBox = document.querySelector(".chat-box");
+const chatBox = document.querySelector(".chat");
 const input = document.querySelector(".input");
 const form = document.querySelector("form");
 const heading = document.querySelector(".heading");
+const nav = document.querySelector(".nav");
+const dull = document.querySelector(".dull");
 
 const apiUrl = "https://openrouter.ai/api/v1/chat/completions";
 const apiKey =
   "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";
-const random = Math.floor(Math.random() * 12);
+const random = Math.floor(Math.random() * 11);
 const headings = [
   "What are you working on?",
   "Hi there, how can I help you?",
@@ -25,7 +27,6 @@ const headings = [
   "Need a hand with something?",
   "Time to get things done. What’s first?",
   "What are we coding today?",
-  "Deploying your ideas...",
   "What's your mission today?",
 ];
 
@@ -35,13 +36,14 @@ window.addEventListener("load", () => {
     input.focus();
     heading.textContent = headings[random];
   }, 1000);
-  hamIcon[0].click();
 });
 
 hamIcon.forEach((e) => {
   e.addEventListener("click", () => {
     container.classList.toggle("jump");
     dHidden.classList.toggle("opacity");
+    nav.classList.toggle("padding");
+    dull.classList.toggle("opacity2");
   });
 });
 
