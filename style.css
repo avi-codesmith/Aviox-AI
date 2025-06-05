@@ -92,6 +92,59 @@ body {
   filter: invert(1);
 }
 
+.history {
+  width: 100%;
+  margin-top: 2rem;
+  padding: 2rem;
+}
+
+.his-heading {
+  margin-bottom: 2rem;
+  text-transform: capitalize;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.his-box {
+  background-color: #313131;
+  border-radius: 1rem;
+  color: #fff;
+  padding: 1rem 2rem;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.transition {
+  transition: all 0.3s ease;
+}
+
+.his-box:hover {
+  background-color: #272727;
+}
+
+.his-box span {
+  padding: 0.6rem;
+  border-radius: 0.6rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.his-box span img {
+  height: 2.4rem;
+  width: 2.4rem;
+  justify-self: right;
+  opacity: 0;
+}
+
+.his-box:hover img {
+  opacity: 1;
+}
+
 .main {
   background-color: #181818;
   height: 100vh;
@@ -143,22 +196,21 @@ body {
   display: none;
 }
 
-.chat-box::after {
-  content: "Hi there, How can I help with?";
+.heading {
   position: absolute;
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 2.8rem;
+  font-size: 3.2rem;
   font-weight: 600;
-
-  background: linear-gradient(90deg, #777, #ffffff);
+  user-select: none;
+  background: linear-gradient(90deg, #777, #ddd);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.chat-box.hide::after {
-  content: none;
+.heading.hide {
+  display: none;
 }
 
 .message {

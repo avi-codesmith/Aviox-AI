@@ -8,15 +8,32 @@ const up = document.querySelector(".up");
 const chatBox = document.querySelector(".chat-box");
 const input = document.querySelector(".input");
 const form = document.querySelector("form");
+const heading = document.querySelector(".heading");
 
 const apiUrl = "https://openrouter.ai/api/v1/chat/completions";
 const apiKey =
-  "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";
+  "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";
+const random = Math.floor(Math.random() * 12);
+const headings = [
+  "What are you working on?",
+  "Hi there, how can I help you?",
+  "What's on the agenda today?",
+  "What's on your mind today?",
+  "Hey! What’s cooking in your brain today?",
+  "Let’s build something amazing!",
+  "How can I assist you today?",
+  "Need a hand with something?",
+  "Time to get things done. What’s first?",
+  "What are we coding today?",
+  "Deploying your ideas...",
+  "What's your mission today?",
+];
 
 window.addEventListener("load", () => {
   setTimeout(() => {
     loader.style.opacity = "0";
     input.focus();
+    heading.textContent = headings[random];
   }, 1000);
   hamIcon[0].click();
 });
@@ -37,7 +54,7 @@ const getAnswer = async (message, botText) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "mistralai/devstral-small:free",
+        model: "sarvamai/sarvam-m:free",
         messages: [
           {
             role: "user",
@@ -48,9 +65,8 @@ const getAnswer = async (message, botText) => {
     });
 
     const data = await response.json();
-
     const reply = data.choices[0].message.content;
-    botText.textContent = reply.replace(/[*\/\\'`]/g, "").trim();
+    botText.textContent = reply.replace(/[*\/\\']/g, "").trim();
     chatBox.scrollTop = chatBox.scrollHeight;
   } catch (error) {
     botText.textContent = "404 Error : Something went wrong. Pls try again";
@@ -59,8 +75,6 @@ const getAnswer = async (message, botText) => {
 };
 
 const addDiv = () => {
-  chatBox.classList.add("hide");
-
   const message = input.value.trim();
 
   if (message !== "") {
@@ -73,6 +87,7 @@ const addDiv = () => {
     text.textContent = message;
 
     input.value = "";
+    heading.classList.add("hide");
 
     const bot = document.createElement("div");
     chatBox.appendChild(bot);
@@ -81,24 +96,23 @@ const addDiv = () => {
     bot.classList.add("message", "bot");
     botText.classList.add("text", "bg2");
     botText.textContent = "Thinking...";
-
     chatBox.scrollTop = chatBox.scrollHeight;
 
     getAnswer(message, botText);
   }
 };
 
+up.addEventListener("click", addDiv);
+
 const focus = () => {
   input.focus();
 };
 
-form.addEventListener("click", (e) => {
+form.addEventListener("submit", (e) => {
   e.preventDefault();
   addDiv();
   input.focus();
 });
-
-up.addEventListener("click", addDiv);
 
 document.addEventListener("keyup", (e) => {
   if (e.key === "Enter") {
