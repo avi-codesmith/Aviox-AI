@@ -16,6 +16,7 @@
 
 html {
   font-size: 62.5%;
+  overflow: hidden;
 }
 
 body {
@@ -343,7 +344,7 @@ textarea {
 .dull {
   height: 100vh;
   width: 100vw;
-  background-color: red;
+  background-color: #121212ee;
   position: absolute;
   top: 0;
   right: 0;
@@ -391,9 +392,33 @@ textarea {
   }
   form {
     flex-direction: column;
+    border-radius: 4rem 4rem 0 0;
+    width: 100%;
+    margin: 0;
+    padding-bottom: 2rem;
   }
   .btn-wrapper {
-    justify-content: space-around;
+    justify-content: center;
     width: 100%;
+    gap: 4rem;
+  }
+  .main {
+    justify-content: flex-end;
+  }
+  .main::after {
+    content: "";
+  }
+  .chat-box {
+    margin-bottom: 4rem;
+  }
+  .chat {
+    width: 100%;
+    padding: 2rem;
+  }
+  .message {
+    max-width: 50vw;
+  }
+  .heading {
+    font-size: 2.4rem;
   }
 }
