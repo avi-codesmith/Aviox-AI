@@ -202,7 +202,7 @@ body {
 }
 
 .d-hidden {
-  position: absolute;
+  position: fixed;
   top: 2%;
   left: 2%;
   opacity: 0;
@@ -225,10 +225,10 @@ body {
   align-items: center;
   flex-direction: column;
   gap: 2rem;
-  margin-top: 6rem;
 }
 
 .chat {
+  margin: 6rem 0;
   width: 50%;
   height: 100%;
   display: flex;
@@ -253,7 +253,7 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-align: center;
-  white-space: nowrap;
+  width: 100vw;
 }
 
 .heading.hide {
@@ -350,7 +350,7 @@ textarea {
 }
 
 .new {
-  position: absolute;
+  position: fixed;
   top: 2%;
   right: 2%;
   z-index: 9;
@@ -411,7 +411,7 @@ textarea {
     grid-template-columns: 40vw auto;
   }
   .message {
-    max-width: 50vw;
+    max-width: 70vw;
   }
 }
 
@@ -421,6 +421,12 @@ textarea {
   }
   .dull {
     display: block;
+  }
+  .del img {
+    opacity: 1 !important;
+  }
+  .to img {
+    opacity: 1 !important;
   }
 }
 
@@ -449,8 +455,5 @@ textarea {
   .chat {
     width: 100%;
     padding: 2rem;
-  }
-  .heading {
-    font-size: 2.4rem;
   }
 }
