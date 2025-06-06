@@ -6,6 +6,7 @@ const container = document.querySelector(".container");
 const dHidden = document.querySelector(".d-hidden");
 const up = document.querySelector(".up");
 const chatBox = document.querySelector(".chat");
+const chatScroll = document.querySelector(".chat-box");
 const input = document.querySelector(".input");
 const form = document.querySelector("form");
 const heading = document.querySelector(".heading");
@@ -36,9 +37,7 @@ window.addEventListener("load", () => {
     input.focus();
     heading.textContent = headings[random];
   }, 1000);
-  if (window.innerWidth >= 844) {
-    hamIcon[0]?.click();
-  }
+  hamIcon[0]?.click();
 });
 
 hamIcon.forEach((e) => {
@@ -72,10 +71,11 @@ const getAnswer = async (message, botText) => {
     const data = await response.json();
     const reply = data.choices[0].message.content;
     botText.textContent = reply.replace(/[*\/\\']/g, "").trim();
-    chatBox.scrollTop = chatBox.scrollHeight;
+    chatScroll.scrollTop = chatBox.scrollHeight;
   } catch (error) {
     botText.textContent = "404 Error : Something went wrong. Pls try again";
     botText.classList.add("red");
+    chatScroll.scrollTop = chatBox.scrollHeight;
   }
 };
 
@@ -101,7 +101,7 @@ const addDiv = () => {
     bot.classList.add("message", "bot");
     botText.classList.add("text", "bg2");
     botText.textContent = "Thinking...";
-    chatBox.scrollTop = chatBox.scrollHeight;
+    chatScroll.scrollTop = chatBox.scrollHeight;
 
     getAnswer(message, botText);
   }
@@ -113,7 +113,7 @@ const focus = () => {
   input.focus();
 };
 
-form.addEventListener("submit", (e) => {
+form.addEventListener("click", (e) => {
   e.preventDefault();
   addDiv();
   input.focus();

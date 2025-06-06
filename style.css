@@ -126,7 +126,7 @@ body {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 2rem;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease;
   cursor: default;
 }
 
@@ -144,8 +144,29 @@ body {
 .his-box span {
   padding: 0.6rem;
   border-radius: 0.6rem;
-  transition: all 0.3s ease;
   cursor: pointer;
+  transition: all 0.1s ease;
+}
+
+.his-box span:nth-child(1) {
+  margin-right: 0.4rem;
+}
+
+.his-box span:nth-child(1):hover {
+  filter: invert(60%) sepia(90%) saturate(600%) hue-rotate(85deg)
+    brightness(1.2);
+}
+
+.his-box span:nth-child(2):hover {
+  filter: invert(16%) sepia(100%) saturate(7500%) hue-rotate(-15deg)
+    brightness(1.1);
+}
+
+.his-box p {
+  width: 75%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .his-box span img {
@@ -166,7 +187,7 @@ body {
   justify-self: center;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   transition: position 3s ease;
   position: relative;
@@ -198,20 +219,22 @@ body {
 
 .chat-box {
   width: 100%;
-  height: 75vh;
+  height: auto;
   overflow-y: scroll;
   display: flex;
   align-items: center;
   flex-direction: column;
   gap: 2rem;
-  margin-bottom: 2rem;
+  margin-top: 6rem;
 }
 
 .chat {
   width: 50%;
+  height: 100%;
   display: flex;
   align-items: center;
   flex-direction: column;
+  gap: 4rem;
 }
 
 .chat-box::-webkit-scrollbar {
@@ -230,6 +253,7 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-align: center;
+  white-space: nowrap;
 }
 
 .heading.hide {
@@ -276,6 +300,7 @@ form {
   box-shadow: 1px 10px 12px rgba(0, 0, 0, 0.5);
   border: 0.5px solid #333;
   cursor: text;
+  margin-bottom: 6rem;
 }
 
 textarea {
@@ -364,13 +389,20 @@ textarea {
   pointer-events: none;
 }
 
+.trans {
+  background-color: transparent !important;
+}
+
 @media (max-width: 1440px) {
   .container {
     grid-template-columns: 30vw auto;
   }
   form {
     width: 80%;
-    margin-bottom: 2rem;
+    margin-bottom: 6rem;
+  }
+  .chat {
+    width: 80%;
   }
 }
 
@@ -378,9 +410,12 @@ textarea {
   .container {
     grid-template-columns: 40vw auto;
   }
+  .message {
+    max-width: 50vw;
+  }
 }
 
-@media (max-width: 850px) {
+@media (max-width: 860px) {
   .container {
     grid-template-columns: 60vw auto;
   }
@@ -389,7 +424,7 @@ textarea {
   }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 541px) {
   html {
     font-size: 50%;
   }
@@ -408,21 +443,12 @@ textarea {
     width: 100%;
     gap: 4rem;
   }
-  .main {
-    justify-content: flex-end;
-  }
   .main::after {
     content: "";
-  }
-  .chat-box {
-    margin-bottom: 4rem;
   }
   .chat {
     width: 100%;
     padding: 2rem;
-  }
-  .message {
-    max-width: 50vw;
   }
   .heading {
     font-size: 2.4rem;
