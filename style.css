@@ -434,7 +434,7 @@ textarea {
     padding: 0 2rem;
   }
   form {
-    position: fixed;
+    position: sticky;
     bottom: 0%;
   }
   .main {
