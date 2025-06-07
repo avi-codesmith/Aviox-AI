@@ -434,12 +434,8 @@ textarea {
     padding: 0 2rem;
   }
   form {
-    position: sticky;
+    position: fixed;
     bottom: 0%;
-  }
-  .main {
-    height: auto;
-    overflow-y: scroll;
   }
 }
 
