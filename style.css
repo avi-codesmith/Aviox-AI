@@ -211,6 +211,7 @@ body {
 
 .d-hidden.opacity {
   opacity: 1;
+  z-index: 9;
 }
 
 .d-hidden .ham {
@@ -224,6 +225,8 @@ body {
   align-items: center;
   flex-direction: column;
   gap: 2rem;
+  position: sticky;
+  top: 0;
 }
 
 .chat {
