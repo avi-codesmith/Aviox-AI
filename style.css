@@ -432,7 +432,11 @@ textarea {
   }
   form {
     position: fixed;
-    bottom: 0;
+    bottom: 10%;
+  }
+  .main {
+    height: auto;
+    overflow-y: scroll;
   }
 }
 
