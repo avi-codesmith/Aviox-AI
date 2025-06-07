@@ -219,7 +219,6 @@ body {
 
 .chat-box {
   width: 100%;
-  height: auto;
   overflow-y: scroll;
   display: flex;
   align-items: center;
@@ -399,7 +398,6 @@ textarea {
   }
   form {
     width: 80%;
-    margin-bottom: 6rem;
   }
   .chat {
     width: 80%;
@@ -428,6 +426,10 @@ textarea {
   .to img {
     opacity: 1 !important;
   }
+  .heading {
+    position: fixed;
+    padding: 0 2rem;
+  }
 }
 
 @media (max-width: 541px) {
@@ -442,7 +444,6 @@ textarea {
     border-radius: 4rem 4rem 0 0;
     width: 100%;
     margin: 0;
-    padding-bottom: 2rem;
   }
   .btn-wrapper {
     justify-content: center;
