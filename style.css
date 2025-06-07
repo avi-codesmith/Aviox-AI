@@ -38,7 +38,7 @@ body {
   justify-content: center;
   pointer-events: none;
   transition: all 0.2s ease;
-  z-index: 9999;
+  z-index: 99999;
 }
 
 .loader img {
@@ -244,7 +244,7 @@ body {
 }
 
 .heading {
-  position: absolute;
+  position: fixed;
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -395,6 +395,41 @@ textarea {
   background-color: transparent !important;
 }
 
+.window {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #222;
+  z-index: 9999;
+  padding: 2rem;
+  border-radius: 2rem;
+  opacity: 0;
+  transition: all 0.2s ease;
+  box-shadow: 0px 0px 32px #121212;
+}
+
+.window p {
+  font-size: 1.4rem;
+  margin: 2rem 0;
+}
+
+.window button {
+  font-size: 1.4rem;
+  padding: 1rem 2rem;
+  border-radius: 4rem;
+  background-color: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+}
+
+.red {
+  background-color: rgb(246, 69, 69) !important;
+  margin-left: 2rem;
+  border: none !important;
+  padding: 1.4rem 2.4rem;
+}
+
 @media (max-width: 1440px) {
   .container {
     grid-template-columns: 30vw auto;
@@ -429,23 +464,14 @@ textarea {
   .to img {
     opacity: 1 !important;
   }
-  .heading {
-    position: fixed;
-    padding: 0 2rem;
-  }
-  form {
-    position: fixed;
-    bottom: 0%;
-  }
-  main {
-    overflow-y: scroll;
-    height: auto;
-  }
 }
 
 @media (max-width: 541px) {
   html {
     font-size: 50%;
+  }
+  body {
+    background-color: #181818;
   }
   .container {
     grid-template-columns: 90vw auto;
@@ -467,5 +493,13 @@ textarea {
   .chat {
     width: 100%;
     padding: 2rem;
+  }
+
+  form {
+    position: fixed;
+    bottom: 0%;
+  }
+  .main {
+    height: 85vh;
   }
 }

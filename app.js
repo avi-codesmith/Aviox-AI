@@ -5,6 +5,7 @@ const hamIcon = document.querySelectorAll(".ham");
 const container = document.querySelector(".container");
 const dHidden = document.querySelector(".d-hidden");
 const up = document.querySelector(".up");
+const to = document.querySelectorAll(".to");
 const chatBox = document.querySelector(".chat");
 const chatScroll = document.querySelector(".chat-box");
 const input = document.querySelector(".input");
@@ -12,6 +13,11 @@ const form = document.querySelector("form");
 const heading = document.querySelector(".heading");
 const nav = document.querySelector(".nav");
 const dull = document.querySelector(".dull");
+const del = document.querySelector(".red");
+const fake = document.querySelectorAll(".del");
+const hisBox = document.querySelector(".his-box");
+const windowBox = document.querySelector(".window");
+const can = document.querySelector(".can");
 
 const apiUrl = "https://openrouter.ai/api/v1/chat/completions";
 const apiKey =
@@ -40,12 +46,48 @@ window.addEventListener("load", () => {
   hamIcon[0]?.click();
 });
 
+fake.forEach((e) => {
+  e.addEventListener("click", () => {
+    windowBox.style.opacity = "1";
+  });
+});
+
+del.addEventListener("click", () => {
+  hisBox.style.display = "none";
+  windowBox.style.opacity = "0";
+});
+
+can.addEventListener("click", () => {
+  windowBox.style.opacity = "0";
+});
+
+const classToggle = () => {
+  container.classList.toggle("jump");
+  dHidden.classList.toggle("opacity");
+  nav.classList.toggle("padding");
+  dull.classList.toggle("opacity2");
+};
+
 hamIcon.forEach((e) => {
   e.addEventListener("click", () => {
-    container.classList.toggle("jump");
-    dHidden.classList.toggle("opacity");
-    nav.classList.toggle("padding");
-    dull.classList.toggle("opacity2");
+    classToggle();
+  });
+});
+
+dull.addEventListener("click", () => {
+  classToggle();
+});
+
+to.forEach((e) => {
+  e.addEventListener("click", () => {
+    classToggle();
+    const hisBox = e.closest(".his-box");
+    const hisText = hisBox.querySelector(".his-text");
+    const message = hisText.textContent.trim();
+    if (message) {
+      input.value = message;
+      addDiv();
+    }
   });
 });
 
