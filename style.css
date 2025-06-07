@@ -430,6 +430,10 @@ textarea {
     position: fixed;
     padding: 0 2rem;
   }
+  form {
+    position: fixed;
+    bottom: 0;
+  }
 }
 
 @media (max-width: 541px) {
