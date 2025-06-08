@@ -208,7 +208,7 @@ document.addEventListener("keyup", (e) => {
     focus();
   } else if (e.ctrlKey && e.key.toLowerCase() === "b") {
     classToggle();
-  } else if (e.key === "n") {
+  } else if (e.ctrlKey && e.key.toLowerCase() === "m") {
     newChatBtn.click();
   }
 });
