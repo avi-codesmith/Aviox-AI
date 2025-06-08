@@ -13,11 +13,12 @@ const form = document.querySelector("form");
 const heading = document.querySelector(".heading");
 const nav = document.querySelector(".nav");
 const dull = document.querySelector(".dull");
-const del = document.querySelector(".red");
+const del = document.querySelector(".main-del");
 const fake = document.querySelectorAll(".del");
-const hisBox = document.querySelector(".his-box");
+const hisBoxes = document.querySelectorAll(".his-box");
 const windowBox = document.querySelector(".window");
 const can = document.querySelector(".can");
+const transition = document.querySelectorAll(".transition");
 
 const apiUrl = "https://openrouter.ai/api/v1/chat/completions";
 const apiKey =
@@ -46,19 +47,39 @@ window.addEventListener("load", () => {
   hamIcon[0]?.click();
 });
 
+hisBoxes.forEach((box) => {
+  const transitionEl = box.querySelector(".transition");
+
+  box.addEventListener("mouseenter", () => {
+    if (transitionEl) transitionEl.classList.add("hidden");
+  });
+
+  box.addEventListener("mouseleave", () => {
+    if (transitionEl) transitionEl.classList.remove("hidden");
+  });
+});
+
 fake.forEach((e) => {
   e.addEventListener("click", () => {
     windowBox.style.opacity = "1";
+    container.style.opacity = "0.1";
+    container.style.pointerEvents = "none";
   });
 });
 
 del.addEventListener("click", () => {
-  hisBox.style.display = "none";
+  hisBoxes.forEach((box) => {
+    box.style.display = "none";
+  });
   windowBox.style.opacity = "0";
+  container.style.opacity = "1";
+  container.style.pointerEvents = "auto";
 });
 
 can.addEventListener("click", () => {
   windowBox.style.opacity = "0";
+  container.style.opacity = "1";
+  container.style.pointerEvents = "auto";
 });
 
 const classToggle = () => {
@@ -80,10 +101,14 @@ dull.addEventListener("click", () => {
 
 to.forEach((e) => {
   e.addEventListener("click", () => {
-    classToggle();
+    if (window.innerWidth <= 860) {
+      classToggle();
+    }
+
     const hisBox = e.closest(".his-box");
-    const hisText = hisBox.querySelector(".his-text");
-    const message = hisText.textContent.trim();
+    const hisText = hisBox?.querySelector(".his-text");
+    const message = hisText?.textContent.trim();
+
     if (message) {
       input.value = message;
       addDiv();
@@ -101,12 +126,7 @@ const getAnswer = async (message, botText) => {
       },
       body: JSON.stringify({
         model: "sarvamai/sarvam-m:free",
-        messages: [
-          {
-            role: "user",
-            content: message,
-          },
-        ],
+        messages: [{ role: "user", content: message }],
       }),
     });
 

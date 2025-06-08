@@ -128,28 +128,71 @@ body {
   margin-bottom: 2rem;
   transition: background-color 0.3s ease;
   cursor: default;
+  position: relative;
 }
 
 .transition {
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  position: absolute;
+  flex-direction: column;
+  bottom: -180%;
+  right: 0%;
+  background-color: #313131;
+  transition: all 0.1s ease;
+  border-radius: 1rem;
+  gap: 1rem;
+  z-index: 9;
+  opacity: 0;
+  padding: 1rem;
+  pointer-events: none;
+}
+
+.transition.hidden {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mini-ham {
+  height: 2.4rem;
+  width: 2.4rem;
+  cursor: pointer;
+}
+
+.ham img {
+  height: 100%;
+  width: 100%;
 }
 
 .his-box:hover {
   background-color: #272727;
 }
 
-.his-box span {
-  padding: 0.6rem;
+.his-box .transition span {
   border-radius: 0.6rem;
   cursor: pointer;
-  transition: all 0.1s ease;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  word-break: break-word;
+  white-space: normal;
 }
 
-.his-box span:nth-child(1) {
-  margin-right: 0.4rem;
+.his-box .transition span {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  width: 100%;
+}
+
+.his-box .transition span img {
+  height: 1.6rem;
+  width: 1.6rem;
 }
 
 .his-box span:nth-child(1):hover {
@@ -163,21 +206,10 @@ body {
 }
 
 .his-box p {
-  width: 75%;
+  width: 85%;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-}
-
-.his-box span img {
-  height: 2.4rem;
-  width: 2.4rem;
-  justify-self: right;
-  opacity: 0;
-}
-
-.his-box:hover img {
-  opacity: 1;
 }
 
 .main {
@@ -225,8 +257,6 @@ body {
   align-items: center;
   flex-direction: column;
   gap: 2rem;
-  position: sticky;
-  top: 0;
 }
 
 .chat {
@@ -244,7 +274,7 @@ body {
 }
 
 .heading {
-  position: fixed;
+  position: absolute;
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -313,6 +343,10 @@ textarea {
   font-size: 1.6rem;
   font-family: "Poppins";
   resize: none;
+}
+
+.textarea::-webkit-scrollbar {
+  width: 0;
 }
 
 .btn-wrapper {
@@ -421,13 +455,19 @@ textarea {
   background-color: transparent;
   border: 1px solid #fff;
   color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.red {
+.main-del {
   background-color: rgb(246, 69, 69) !important;
   margin-left: 2rem;
   border: none !important;
   padding: 1.4rem 2.4rem;
+}
+
+.window button:hover {
+  opacity: 0.7;
 }
 
 @media (max-width: 1440px) {
@@ -463,6 +503,9 @@ textarea {
   }
   .to img {
     opacity: 1 !important;
+  }
+  .heading {
+    position: fixed;
   }
 }
 
@@ -501,5 +544,8 @@ textarea {
   }
   .main {
     height: 85vh;
+  }
+  .window {
+    width: 60vw;
   }
 }
