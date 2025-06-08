@@ -71,8 +71,11 @@ hisBoxes.forEach((box) => {
   });
 });
 
-fake.forEach((e) => {
-  e.addEventListener("click", () => {
+let hisBoxToDelete = null;
+
+fake.forEach((delBtn) => {
+  delBtn.addEventListener("click", () => {
+    hisBoxToDelete = delBtn.closest(".his-box");
     windowBox.style.opacity = "1";
     container.style.opacity = "0.1";
     container.style.pointerEvents = "none";
@@ -80,15 +83,17 @@ fake.forEach((e) => {
 });
 
 del.addEventListener("click", () => {
-  hisBoxes.forEach((box) => {
-    box.style.display = "none";
-  });
+  if (hisBoxToDelete) {
+    hisBoxToDelete.remove();
+    hisBoxToDelete = null;
+  }
   windowBox.style.opacity = "0";
   container.style.opacity = "1";
   container.style.pointerEvents = "auto";
 });
 
 can.addEventListener("click", () => {
+  hisBoxToDelete = null;
   windowBox.style.opacity = "0";
   container.style.opacity = "1";
   container.style.pointerEvents = "auto";
