@@ -19,6 +19,7 @@ const hisBoxes = document.querySelectorAll(".his-box");
 const windowBox = document.querySelector(".window");
 const can = document.querySelector(".can");
 const transition = document.querySelectorAll(".transition");
+const newChatBtn = document.querySelector(".new");
 
 const apiUrl = "https://openrouter.ai/api/v1/chat/completions";
 const apiKey =
@@ -45,6 +46,17 @@ window.addEventListener("load", () => {
     heading.textContent = headings[random];
   }, 1000);
   hamIcon[0]?.click();
+});
+
+newChatBtn.addEventListener("click", () => {
+  chatBox.innerHTML = "";
+  input.value = "";
+
+  const newHeading = headings[Math.floor(Math.random() * headings.length)];
+  heading.textContent = newHeading;
+  heading.classList.remove("hide");
+
+  input.focus();
 });
 
 hisBoxes.forEach((box) => {
@@ -182,9 +194,16 @@ form.addEventListener("click", (e) => {
 });
 
 document.addEventListener("keyup", (e) => {
-  if (e.key === "Enter") {
+  if (e.ctrlKey && e.key.toLowerCase() === "n") {
+    e.preventDefault();
+    newChatBtn.click();
+  } else if (e.key === "Enter") {
     addDiv();
   } else if (e.key === "/") {
     focus();
+  } else if (e.ctrlKey && e.key.toLowerCase() === "b") {
+    classToggle();
+  } else if (e.key === "n") {
+    newChatBtn.click();
   }
 });
