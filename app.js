@@ -120,29 +120,11 @@ const classToggle = () => {
   dull.classList.toggle("opacity2");
 };
 
-let touchStartX = 0;
-let touchEndX = 0;
-
-document.addEventListener("touchstart", (e) => {
-  touchStartX = e.changedTouches[0].screenX;
-});
-
-document.addEventListener("touchend", (e) => {
-  touchEndX = e.changedTouches[0].screenX;
-  handleSwipe();
-});
-
-const handleSwipe = () => {
-  const threshold = 50;
-  if (touchEndX < touchStartX - threshold && nav.classList.contains("open")) {
-    classToggle(); // Swipe left to close
-  } else if (
-    touchEndX > touchStartX + threshold &&
-    !nav.classList.contains("open")
-  ) {
+hamIcon.forEach((e) => {
+  e.addEventListener("click", () => {
     classToggle();
-  }
-};
+  });
+});
 
 dull.addEventListener("click", () => {
   classToggle();
