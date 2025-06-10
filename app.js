@@ -7,6 +7,7 @@ const dHidden = document.querySelector(".d-hidden");
 const up = document.querySelector(".up");
 const to = document.querySelectorAll(".to");
 const chatBox = document.querySelector(".chat");
+const history = document.querySelector(".history");
 const chatScroll = document.querySelector(".chat-box");
 const input = document.querySelector(".input");
 const form = document.querySelector("form");
@@ -15,11 +16,10 @@ const nav = document.querySelector(".nav");
 const dull = document.querySelector(".dull");
 const del = document.querySelector(".main-del");
 const fake = document.querySelectorAll(".del");
-const hisBoxes = document.querySelectorAll(".his-box");
 const windowBox = document.querySelector(".window");
 const can = document.querySelector(".can");
-const transition = document.querySelectorAll(".transition");
 const newChatBtn = document.querySelector(".new");
+const openBox = document.querySelector(".open-box");
 
 const apiUrl = "https://openrouter.ai/api/v1/chat/completions";
 const apiKey =
@@ -51,35 +51,47 @@ window.addEventListener("load", () => {
 newChatBtn.addEventListener("click", () => {
   chatBox.innerHTML = "";
   input.value = "";
-
   const newHeading = headings[Math.floor(Math.random() * headings.length)];
   heading.textContent = newHeading;
   heading.classList.remove("hide");
-
   input.focus();
-});
-
-hisBoxes.forEach((box) => {
-  const transitionEl = box.querySelector(".transition");
-
-  box.addEventListener("mouseenter", () => {
-    if (transitionEl) transitionEl.classList.add("hidden");
-  });
-
-  box.addEventListener("mouseleave", () => {
-    if (transitionEl) transitionEl.classList.remove("hidden");
-  });
 });
 
 let hisBoxToDelete = null;
 
-fake.forEach((delBtn) => {
-  delBtn.addEventListener("click", () => {
-    hisBoxToDelete = delBtn.closest(".his-box");
+history.addEventListener("mouseover", (e) => {
+  const box = e.target.closest(".his-box");
+  const transitionEl = box?.querySelector(".transition");
+  if (transitionEl) transitionEl.classList.add("hidden");
+});
+
+history.addEventListener("mouseout", (e) => {
+  const box = e.target.closest(".his-box");
+  const transitionEl = box?.querySelector(".transition");
+  if (transitionEl) transitionEl.classList.remove("hidden");
+});
+
+history.addEventListener("click", (e) => {
+  if (e.target.closest(".del")) {
+    hisBoxToDelete = e.target.closest(".his-box");
     windowBox.style.opacity = "1";
+    windowBox.style.pointerEvents = "auto";
     container.style.opacity = "0.1";
     container.style.pointerEvents = "none";
-  });
+    container.style.userSelect = "none";
+  } else if (e.target.closest(".to")) {
+    if (window.innerWidth <= 860) {
+      classToggle();
+    }
+    const hisBox = e.target.closest(".his-box");
+    const hisText = hisBox?.querySelector(".his-text");
+    const message = hisText?.textContent.trim();
+    if (message) {
+      openBox.style.display = "none";
+      input.value = message;
+      addDiv();
+    }
+  }
 });
 
 del.addEventListener("click", () => {
@@ -90,6 +102,7 @@ del.addEventListener("click", () => {
   windowBox.style.opacity = "0";
   container.style.opacity = "1";
   container.style.pointerEvents = "auto";
+  container.style.userSelect = "none";
 });
 
 can.addEventListener("click", () => {
@@ -97,6 +110,7 @@ can.addEventListener("click", () => {
   windowBox.style.opacity = "0";
   container.style.opacity = "1";
   container.style.pointerEvents = "auto";
+  container.style.userSelect = "auto";
 });
 
 const classToggle = () => {
@@ -106,31 +120,32 @@ const classToggle = () => {
   dull.classList.toggle("opacity2");
 };
 
-hamIcon.forEach((e) => {
-  e.addEventListener("click", () => {
-    classToggle();
-  });
+let touchStartX = 0;
+let touchEndX = 0;
+
+document.addEventListener("touchstart", (e) => {
+  touchStartX = e.changedTouches[0].screenX;
 });
+
+document.addEventListener("touchend", (e) => {
+  touchEndX = e.changedTouches[0].screenX;
+  handleSwipe();
+});
+
+const handleSwipe = () => {
+  const threshold = 50;
+  if (touchEndX < touchStartX - threshold && nav.classList.contains("open")) {
+    classToggle(); // Swipe left to close
+  } else if (
+    touchEndX > touchStartX + threshold &&
+    !nav.classList.contains("open")
+  ) {
+    classToggle();
+  }
+};
 
 dull.addEventListener("click", () => {
   classToggle();
-});
-
-to.forEach((e) => {
-  e.addEventListener("click", () => {
-    if (window.innerWidth <= 860) {
-      classToggle();
-    }
-
-    const hisBox = e.closest(".his-box");
-    const hisText = hisBox?.querySelector(".his-text");
-    const message = hisText?.textContent.trim();
-
-    if (message) {
-      input.value = message;
-      addDiv();
-    }
-  });
 });
 
 const getAnswer = async (message, botText) => {
@@ -183,6 +198,23 @@ const addDiv = () => {
     chatScroll.scrollTop = chatBox.scrollHeight;
 
     getAnswer(message, botText);
+
+    if (chatBox.children.length === 2) {
+      history.innerHTML += `
+        <div class="his-box">
+          <p class="his-text">${message}</p>
+          <div class="mini-ham">
+            <img alt="more" src="icons/mini-ham.svg" />
+          </div>
+          <div class="transition">
+            <span class="to"><img alt="to-btn" src="icons/to.svg" />Run</span>
+            <span class="del">
+              <img alt="del-btn" src="icons/del.svg" />
+              <font color="#ddd">Delete</font>
+            </span>
+          </div>
+        </div>`;
+    }
   }
 };
 
