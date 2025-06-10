@@ -87,7 +87,6 @@ history.addEventListener("click", (e) => {
     const hisText = hisBox?.querySelector(".his-text");
     const message = hisText?.textContent.trim();
     if (message) {
-      openBox.style.display = "none";
       input.value = message;
       addDiv();
     }

@@ -308,6 +308,15 @@ body {
   margin-right: 4rem;
 }
 
+.main-chat {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
 .chat-box {
   width: 100%;
   overflow-y: scroll;
@@ -315,10 +324,11 @@ body {
   align-items: center;
   flex-direction: column;
   gap: 2rem;
+  padding: 6rem 0;
+  height: 80vh;
 }
 
 .chat {
-  margin-top: 6rem;
   width: 50%;
   height: 100%;
   display: flex;
@@ -380,6 +390,7 @@ body {
 
 form {
   background-color: #1f1f1f;
+  justify-self: flex-end;
   display: flex;
   align-items: center;
   justify-content: space-between;
