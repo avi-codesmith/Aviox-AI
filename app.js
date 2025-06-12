@@ -21,10 +21,7 @@ const can = document.querySelector(".can");
 const newChatBtn = document.querySelector(".new");
 
 const apiUrl = "http://localhost:3000/ask";
-const apiKey =
-  "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";
 
-const random = Math.floor(Math.random() * 11);
 const headings = [
   "What are you working on?",
   "Hi there, how can I help you?",
@@ -43,7 +40,7 @@ window.addEventListener("load", () => {
   setTimeout(() => {
     loader.style.opacity = "0";
     input.focus();
-    heading.textContent = headings[random];
+    heading.textContent = headings[Math.floor(Math.random() * headings.length)];
   }, 1000);
   hamIcon[0]?.click();
   loadHistory();
@@ -52,17 +49,13 @@ window.addEventListener("load", () => {
 const toggleOpenBoxVisibility = () => {
   const openBox = document.querySelector(".open-box");
   const hisBoxes = document.querySelectorAll(".his-box");
-
-  if (openBox) {
-    openBox.style.display = hisBoxes.length > 0 ? "none" : "";
-  }
+  if (openBox) openBox.style.display = hisBoxes.length > 0 ? "none" : "";
 };
 
 newChatBtn.addEventListener("click", () => {
   chatBox.innerHTML = "";
   input.value = "";
-  const newHeading = headings[Math.floor(Math.random() * headings.length)];
-  heading.textContent = newHeading;
+  heading.textContent = headings[Math.floor(Math.random() * headings.length)];
   heading.classList.remove("hide");
   input.focus();
 });
@@ -90,9 +83,7 @@ history.addEventListener("click", (e) => {
     container.style.pointerEvents = "none";
     container.style.userSelect = "none";
   } else if (e.target.closest(".to")) {
-    if (window.innerWidth <= 860) {
-      classToggle();
-    }
+    if (window.innerWidth <= 860) classToggle();
     const hisBox = e.target.closest(".his-box");
     const hisText = hisBox?.querySelector(".his-text");
     const message = hisText?.textContent.trim();
@@ -103,26 +94,19 @@ history.addEventListener("click", (e) => {
   }
 });
 
-del.addEventListener("click", (e) => {
+del.addEventListener("click", () => {
   if (hisBoxToDelete) {
     const text = hisBoxToDelete.querySelector(".his-text")?.textContent.trim();
     hisBoxToDelete.remove();
     hisBoxToDelete = null;
-
-    // ❌ Remove from localStorage
     let saved = JSON.parse(localStorage.getItem("chatHistory") || "[]");
     saved = saved.filter((msg) => msg !== text);
     localStorage.setItem("chatHistory", JSON.stringify(saved));
-    if (e.key === "Enter") {
-      del.click();
-    }
   }
-
   windowBox.style.opacity = "0";
   container.style.opacity = "1";
   container.style.pointerEvents = "auto";
   container.style.userSelect = "none";
-
   toggleOpenBoxVisibility();
 });
 
@@ -141,39 +125,46 @@ const classToggle = () => {
   dull.classList.toggle("opacity2");
 };
 
-hamIcon.forEach((e) => {
-  e.addEventListener("click", classToggle);
-});
-
+hamIcon.forEach((e) => e.addEventListener("click", classToggle));
 dull.addEventListener("click", classToggle);
 
 const getAnswer = async (message, botText) => {
   try {
     const response = await fetch(apiUrl, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message }),
     });
-
     const data = await response.json();
     const reply = data.choices[0].message.content;
     botText.textContent = reply.replace(/[*\/\\']/g, "").trim();
     chatScroll.scrollTop = chatBox.scrollHeight;
-  } catch (error) {
+  } catch {
     botText.textContent = "404 Error : Something went wrong. Pls try again";
     botText.classList.add("red");
     chatScroll.scrollTop = chatBox.scrollHeight;
   }
 };
 
-const addDiv = () => {
-  if (window.innerWidth <= 860) {
-    chatScroll.scrollbottom = container.scrollHeight;
-  }
-  const message = input.value.trim();
+const createHistoryBox = (message) => {
+  return `
+    <div class="his-box">
+      <p class="his-text">${message}</p>
+      <div class="mini-ham">
+        <img alt="more" src="icons/mini-ham.svg" />
+      </div>
+      <div class="transition">
+        <span class="to"><img alt="to-btn" src="icons/to.svg" />Run</span>
+        <span class="del">
+          <img alt="del-btn" src="icons/del.svg" />
+          <font color="#ddd">Delete</font>
+        </span>
+      </div>
+    </div>`;
+};
 
+const addDiv = () => {
+  const message = input.value.trim();
   if (message !== "") {
     const user = document.createElement("div");
     chatBox.appendChild(user);
@@ -182,10 +173,8 @@ const addDiv = () => {
     user.classList.add("message", "user");
     text.classList.add("text", "bg");
     text.textContent = message;
-
     input.value = "";
     heading.classList.add("hide");
-
     const bot = document.createElement("div");
     chatBox.appendChild(bot);
     const botText = document.createElement("div");
@@ -194,34 +183,12 @@ const addDiv = () => {
     botText.classList.add("text", "bg2");
     botText.textContent = "Thinking...";
     chatScroll.scrollTop = chatBox.scrollHeight;
-
     getAnswer(message, botText);
-
-    if (chatBox.children.length === 2) {
-      history.innerHTML += `
-        <div class="his-box">
-          <p class="his-text">${message}</p>
-          <div class="mini-ham">
-            <img alt="more" src="icons/mini-ham.svg" />
-          </div>
-          <div class="transition">
-            <span class="to"><img alt="to-btn" src="icons/to.svg" />Run</span>
-            <span class="del">
-              <img alt="del-btn" src="icons/del.svg" />
-              <font color="#ddd">Delete</font>
-            </span>
-          </div>
-        </div>`;
-
-      // ✅ Save message to localStorage
-      const oldHistory = JSON.parse(
-        localStorage.getItem("chatHistory") || "[]"
-      );
-      oldHistory.push(message);
-      localStorage.setItem("chatHistory", JSON.stringify(oldHistory));
-
-      toggleOpenBoxVisibility();
-    }
+    history.innerHTML += createHistoryBox(message);
+    const oldHistory = JSON.parse(localStorage.getItem("chatHistory") || "[]");
+    oldHistory.push(message);
+    localStorage.setItem("chatHistory", JSON.stringify(oldHistory));
+    toggleOpenBoxVisibility();
   }
 };
 
@@ -250,28 +217,12 @@ document.addEventListener("keyup", (e) => {
   }
 });
 
-// 🔁 Load saved history on page load
 const loadHistory = () => {
   const saved = JSON.parse(localStorage.getItem("chatHistory") || "[]");
-
   if (saved.length > 0) {
     saved.forEach((msg) => {
-      history.innerHTML += `
-        <div class="his-box">
-          <p class="his-text">${msg}</p>
-          <div class="mini-ham">
-            <img alt="more" src="icons/mini-ham.svg" />
-          </div>
-          <div class="transition">
-            <span class="to"><img alt="to-btn" src="icons/to.svg" />Run</span>
-            <span class="del">
-              <img alt="del-btn" src="icons/del.svg" />
-              <font color="#ddd">Delete</font>
-            </span>
-          </div>
-        </div>`;
+      history.innerHTML += createHistoryBox(msg);
     });
   }
-
   toggleOpenBoxVisibility();
 };

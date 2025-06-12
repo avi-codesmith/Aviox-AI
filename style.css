@@ -60,6 +60,7 @@ body {
 .container {
   display: grid;
   grid-template-columns: 20vw auto;
+  grid-template-rows: 100vh;
   position: relative;
   justify-items: center;
   align-items: center;
@@ -74,16 +75,15 @@ body {
 
 .nav {
   background-color: #1e1e1e;
-  height: 100vh;
+  height: 100%;
   padding: 2rem;
   padding-right: 0;
   width: 100%;
   transition: 0.3s ease;
-  overflow: hidden;
   z-index: 999;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 4rem;
 }
 
@@ -122,7 +122,7 @@ body {
 }
 
 .history-wrapper {
-  height: 100%;
+  height: 80vh;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -534,9 +534,9 @@ textarea {
 }
 
 @media (max-width: 1440px) {
-  .container {
+  /* .container {
     grid-template-columns: 30vw auto;
-  }
+  } */
   form {
     width: 80%;
   }
@@ -546,18 +546,18 @@ textarea {
 }
 
 @media (max-width: 1052px) {
-  .container {
+  /* .container {
     grid-template-columns: 40vw auto;
-  }
+  } */
   .message {
     max-width: 70vw;
   }
 }
 
 @media (max-width: 860px) {
-  .container {
+  /* .container {
     grid-template-columns: 60vw auto;
-  }
+  } */
   .dull {
     display: block;
   }
@@ -579,9 +579,9 @@ textarea {
   body {
     background-color: #181818;
   }
-  .container {
+  /* .container {
     grid-template-columns: 90vw auto;
-  }
+  } */
   form {
     flex-direction: column;
     border-radius: 4rem 4rem 0 0;
