@@ -20,9 +20,9 @@ const windowBox = document.querySelector(".window");
 const can = document.querySelector(".can");
 const newChatBtn = document.querySelector(".new");
 
-const apiUrl = "https://openrouter.ai/api/v1/chat/completions";
+const apiUrl = "http://localhost:3000/ask";
 const apiKey =
-  "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";
+  "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";
 
 const random = Math.floor(Math.random() * 11);
 const headings = [
@@ -152,13 +152,9 @@ const getAnswer = async (message, botText) => {
     const response = await fetch(apiUrl, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        model: "sarvamai/sarvam-m:free",
-        messages: [{ role: "user", content: message }],
-      }),
+      body: JSON.stringify({ message }),
     });
 
     const data = await response.json();
@@ -173,6 +169,9 @@ const getAnswer = async (message, botText) => {
 };
 
 const addDiv = () => {
+  if (window.innerWidth <= 860) {
+    chatScroll.scrollbottom = chatBox.scrollHeight;
+  }
   const message = input.value.trim();
 
   if (message !== "") {
