@@ -19,7 +19,6 @@ const fake = document.querySelectorAll(".del");
 const windowBox = document.querySelector(".window");
 const can = document.querySelector(".can");
 const newChatBtn = document.querySelector(".new");
-const body = document.querySelector("body");
 
 const apiUrl = "http://localhost:3000/ask";
 const apiKey =
@@ -171,7 +170,7 @@ const getAnswer = async (message, botText) => {
 
 const addDiv = () => {
   if (window.innerWidth <= 860) {
-    chatScroll.scrollbottom = body.scrollHeight;
+    chatScroll.scrollbottom = container.scrollHeight;
   }
   const message = input.value.trim();
 
