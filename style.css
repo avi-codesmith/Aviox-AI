@@ -85,6 +85,7 @@ body {
   flex-direction: column;
   justify-content: flex-start;
   gap: 4rem;
+  overflow: hidden;
 }
 
 .padding {
@@ -138,7 +139,7 @@ body {
 }
 
 .history::-webkit-scrollbar {
-  width: 10px;
+  width: 5px;
   background-color: #333;
   border-radius: 10px;
 }
@@ -198,16 +199,17 @@ body {
   justify-content: center;
   position: absolute;
   flex-direction: column;
-  bottom: -180%;
+  bottom: -160%;
   right: 0%;
   background-color: #313131;
   transition: all 0.1s ease;
   border-radius: 1rem;
-  gap: 1rem;
-  z-index: 9;
+  gap: 0.4rem;
+  z-index: 9999;
   opacity: 0;
-  padding: 1rem;
+  padding: 1rem 1.8rem;
   pointer-events: none;
+  box-shadow: 0px 0px 10px #222;
 }
 
 .transition.hidden {
@@ -265,11 +267,14 @@ body {
     brightness(1.1);
 }
 
-.his-box p {
+.his-text {
   width: 85%;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  color: #fff;
+  background-color: transparent;
+  font-size: 1.6rem;
 }
 
 .main {
