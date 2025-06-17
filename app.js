@@ -18,6 +18,9 @@ const del = document.querySelector(".main-del");
 const windowBox = document.querySelector(".window");
 const can = document.querySelector(".can");
 const newChatBtn = document.querySelector(".new");
+const openBox = document.querySelector(".open-box");
+const picker = document.getElementById("picker");
+const toggleButton = document.getElementById("toggleButton");
 
 let firstMessageAdded = false;
 let hisBoxToDelete = null;
@@ -38,11 +41,49 @@ const headings = [
   "What are we coding today?",
   "What's your mission today?",
 ];
+const loadHistory = () => {
+  history.innerHTML = "";
+  let saved = JSON.parse(localStorage.getItem("chatHistory") || "[]");
+
+  saved = saved.filter(
+    (msg) => msg && msg.text && typeof msg.text === "string"
+  );
+
+  saved.forEach((msg) => {
+    history.innerHTML += createHistoryBox(msg.id, msg.text);
+  });
+
+  localStorage.setItem("chatHistory", JSON.stringify(saved));
+  toggleOpenBoxVisibility();
+};
+
+picker.style.height = "0";
+
+let isPickerOpen = false;
+
+toggleButton.addEventListener("click", () => {
+  isPickerOpen = !isPickerOpen;
+
+  if (isPickerOpen) {
+    picker.style.height = "30rem";
+  } else {
+    picker.style.height = "0";
+  }
+
+  form.classList.toggle("border");
+});
+
+picker.addEventListener("emoji-click", (event) => {
+  input.value += event.detail.unicode;
+});
+
+picker.addEventListener("emoji-click", (event) => {
+  input.value += event.detail.unicode;
+});
 
 window.addEventListener("load", () => {
   setTimeout(() => {
     loader.style.opacity = "0";
-    input.focus();
     heading.textContent = headings[Math.floor(Math.random() * headings.length)];
     container.style.pointerEvents = "auto";
   }, 1000);
@@ -51,17 +92,20 @@ window.addEventListener("load", () => {
 });
 
 const toggleOpenBoxVisibility = () => {
-  const openBox = document.querySelector(".open-box");
-  const hisBoxes = document.querySelectorAll(".his-box");
+  const boxes = document.querySelectorAll(".his-box");
+  console.log("his-box count:", boxes.length);
 
-  if (openBox) {
-    if (hisBoxes.length === 0) {
-      openBox.style.display = "flex"; // or "block" based on your design
-    } else {
-      openBox.style.display = "none";
-    }
+  if (boxes.length == 0) {
+    openBox.style.opacity = "1";
+    console.log("No his-boxes → Showing openBox");
+  } else {
+    openBox.style.opacity = "0";
+    console.log("his-boxes exist → Hiding openBox");
   }
 };
+
+setTimeout(toggleOpenBoxVisibility, 100);
+toggleOpenBoxVisibility();
 
 newChatBtn.addEventListener("click", () => {
   chatBox.innerHTML = "";
@@ -86,13 +130,14 @@ history.addEventListener("mouseout", (e) => {
 
 history.addEventListener("click", (e) => {
   if (e.target.closest(".del")) {
+    container.style.pointerEvents = "none";
     hisBoxToDelete = e.target.closest(".his-box");
     const inputBox = hisBoxToDelete.querySelector(".his-text");
     deleteTextContent = inputBox?.value.trim();
     windowBox.style.opacity = "1";
     windowBox.style.pointerEvents = "auto";
-    container.style.opacity = "0.1";
-    container.style.pointerEvents = "none";
+    container.style.filter = "brightness(0.1)";
+    container.style.opacity = "0.9";
     container.style.userSelect = "none";
   } else if (e.target.closest(".to")) {
     if (window.innerWidth <= 860) classToggle();
@@ -117,17 +162,23 @@ del.addEventListener("click", () => {
     hisBoxToDelete = null;
   }
 
+  toggleOpenBoxVisibility();
   windowBox.style.opacity = "0";
+  windowBox.style.pointerEvents = "none";
+  container.style.filter = "brightness(1)";
   container.style.opacity = "1";
   container.style.pointerEvents = "auto";
   container.style.userSelect = "auto";
-  toggleOpenBoxVisibility();
 });
 
 can.addEventListener("click", () => {
   hisBoxToDelete = null;
   deleteTextContent = "";
   windowBox.style.opacity = "0";
+  windowBox.style.pointerEvents = "none";
+
+  container.style.pointerEvents = "auto";
+  container.style.filter = "brightness(1)";
   container.style.opacity = "1";
   container.style.pointerEvents = "auto";
   container.style.userSelect = "auto";
@@ -207,11 +258,24 @@ const addDiv = () => {
 
     if (!firstMessageAdded && message) {
       const id = generateId();
-      history.innerHTML += createHistoryBox(id, message);
+
+      const isRandom = (msg) => {
+        const cleaned = msg.trim().toLowerCase();
+        if (cleaned.length < 4) return true;
+        if (!cleaned.includes(" ") && !/[aeiou]/.test(cleaned)) return true;
+        const uniqueChars = [...new Set(cleaned)].length;
+        if (uniqueChars < cleaned.length / 2) return true;
+        return false;
+      };
+
+      const textForHistory = isRandom(message) ? "New Chat" : message;
+
+      history.innerHTML += createHistoryBox(id, textForHistory);
+
       const oldHistory = JSON.parse(
         localStorage.getItem("chatHistory") || "[]"
       );
-      oldHistory.push({ id, text: message });
+      oldHistory.push({ id, text: textForHistory });
       localStorage.setItem("chatHistory", JSON.stringify(oldHistory));
       toggleOpenBoxVisibility();
       firstMessageAdded = true;
@@ -225,15 +289,12 @@ up.addEventListener("click", (e) => {
   input.focus();
 });
 
-form.addEventListener("click", () => {
-  input.focus();
-});
+// form.addEventListener("click", () => {
+//   input.focus();
+// });
 
 document.addEventListener("keyup", (e) => {
-  if (e.ctrlKey && e.key.toLowerCase() === "n") {
-    e.preventDefault();
-    newChatBtn.click();
-  } else if (e.key === "Enter") {
+  if (e.key === "Enter") {
     addDiv();
   } else if (e.key === "/") {
     input.focus();
@@ -243,20 +304,3 @@ document.addEventListener("keyup", (e) => {
     newChatBtn.click();
   }
 });
-
-const loadHistory = () => {
-  history.innerHTML = "";
-  let saved = JSON.parse(localStorage.getItem("chatHistory") || "[]");
-
-  // Filter out invalid or corrupted entries
-  saved = saved.filter(
-    (msg) => msg && msg.text && typeof msg.text === "string"
-  );
-
-  saved.forEach((msg) => {
-    history.innerHTML += createHistoryBox(msg.id, msg.text);
-  });
-
-  localStorage.setItem("chatHistory", JSON.stringify(saved)); // Save cleaned history
-  toggleOpenBoxVisibility();
-};

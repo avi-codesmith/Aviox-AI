@@ -21,7 +21,7 @@
       <button class="main-del">Delete</button>
     </div>
     <div class="container">
-      <div class="new">
+      <div class="new" title="New Chat (Ctrl + m)">
         <img src="icons/new.svg" />
       </div>
       <div class="nav">
@@ -32,7 +32,7 @@
           <img
             src="icons/ham.svg"
             alt="nav"
-            title="Close Sidebar"
+            title="Close Sidebar (Ctrl + b)"
             class="ham cursor"
           />
         </div>
@@ -55,7 +55,7 @@
               src="icons/ham.svg"
               alt="nav"
               class="ham"
-              title="Open Sidebar"
+              title="Open Sidebar (Ctrl + b)"
             />
             <a href="#">
               <img src="icons/logo.svg" alt="logo" class="main-logo" />
@@ -70,9 +70,12 @@
         <form action="#">
           <textarea placeholder="Ask anything" class="input"></textarea>
           <div class="btn-wrapper">
-            <button class="emoji btn">
-              <img src="icons/smile.svg" />
-            </button>
+            <div id="inputContainer">
+              <button class="emoji btn" id="toggleButton" type="button">
+                <img src="icons/smile.svg" />
+              </button>
+              <emoji-picker id="picker"></emoji-picker>
+            </div>
             <button class="link btn">
               <img src="icons/link.svg" />
             </button>
@@ -84,5 +87,9 @@
       </div>
     </div>
     <script src="app.js"></script>
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/emoji-picker-element/index.js"
+    ></script>
   </body>
 </html>

@@ -68,6 +68,7 @@ body {
   height: 100vh;
   transition: grid-template-columns 0.3s ease;
   pointer-events: none;
+  background-color: black;
 }
 
 .container.jump {
@@ -165,11 +166,12 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  opacity: 0;
 }
 
 .open-box img {
-  height: 8.6rem;
-  width: 8.6rem;
+  height: 500rem;
+  width: 500rem;
   filter: brightness(30%) saturate(0%);
 }
 
@@ -354,6 +356,7 @@ body {
   -webkit-text-fill-color: transparent;
   text-align: center;
   width: 100vw;
+  margin: 0 2rem;
 }
 
 .heading.hide {
@@ -402,6 +405,9 @@ form {
   border: 0.5px solid #333;
   cursor: text;
   margin-bottom: 6rem;
+  overflow-bottom: hidden;
+  z-index: 9;
+  transition: all 0.3s ease-in-out;
 }
 
 textarea {
@@ -462,7 +468,6 @@ textarea {
   cursor: pointer;
   background-color: #181818;
   border-radius: 1rem;
-  padding: 1rem;
 }
 
 .new img {
@@ -540,6 +545,47 @@ textarea {
   opacity: 0.7;
 }
 
+#picker {
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+  width: 68rem;
+  position: absolute;
+  bottom: 200%;
+  left: -1200%;
+  z-index: 1;
+
+  --box-shadow: 0 5px 24px #fff;
+  --background: #222;
+  --category-button-color: white;
+  --category-button-active-color: yellow;
+  --search-input-color: white;
+  --indicator-color: #fff;
+  --emoji-size: 3rem;
+  --border-color: #333;
+  --border-radius: 24px 24px 0 0;
+}
+
+#search {
+  background-color: red;
+}
+
+emoji-picker::-webkit-scrollbar {
+  background-color: red;
+  width: 5px;
+}
+
+emoji-picker::-webkit-scrollbar {
+  width: 8px;
+}
+
+#inputContainer {
+  position: relative;
+}
+
+.border {
+  border-radius: 4rem 0 4rem 4rem !important;
+}
+
 @media (max-width: 1440px) {
   .container {
     grid-template-columns: 30vw auto;
@@ -549,6 +595,11 @@ textarea {
   }
   .chat {
     width: 80%;
+  }
+  #picker {
+    width: 30rem;
+    left: -245%;
+    --emoji-size: 2rem;
   }
 }
 
@@ -590,13 +641,12 @@ textarea {
     grid-template-columns: 90vw auto;
   }
   form {
-    flex-direction: column;
     border-radius: 4rem 4rem 0 0;
     width: 100%;
     margin: 0;
   }
   .btn-wrapper {
-    justify-content: center;
+    justify-content: end;
     width: 100%;
     gap: 4rem;
   }
@@ -608,6 +658,10 @@ textarea {
     padding: 2rem;
     margin-bottom: 30rem;
     margin-top: 6rem;
+  }
+
+  #inputContainer {
+    display: none !important;
   }
 
   form {
