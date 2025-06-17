@@ -356,7 +356,7 @@ body {
   -webkit-text-fill-color: transparent;
   text-align: center;
   width: 100vw;
-  margin: 0 2rem;
+  padding: 0 2rem;
 }
 
 .heading.hide {

@@ -88,6 +88,7 @@ window.addEventListener("load", () => {
     container.style.pointerEvents = "auto";
   }, 1000);
   hamIcon[0]?.click();
+  input.focus();
   loadHistory();
 });
 
@@ -289,9 +290,9 @@ up.addEventListener("click", (e) => {
   input.focus();
 });
 
-// form.addEventListener("click", () => {
-//   input.focus();
-// });
+form.addEventListener("click", () => {
+  input.focus();
+});
 
 document.addEventListener("keyup", (e) => {
   if (e.key === "Enter") {
