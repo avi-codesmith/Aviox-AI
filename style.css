@@ -22,7 +22,7 @@ html {
 body {
   position: relative;
   font-family: "Poppins";
-  background-color: #1e1e1e;
+  background-color: #fff;
   color: #e0e0e0;
   overflow: hidden;
 }
@@ -67,6 +67,7 @@ body {
   width: 100vw;
   height: 100vh;
   transition: grid-template-columns 0.3s ease;
+  pointer-events: none;
 }
 
 .container.jump {
@@ -209,7 +210,7 @@ body {
   opacity: 0;
   padding: 1rem 1.8rem;
   pointer-events: none;
-  box-shadow: 0px 0px 10px #222;
+  box-shadow: 0px 0px 1rem #222;
 }
 
 .transition.hidden {
@@ -323,7 +324,8 @@ body {
   flex-direction: column;
   gap: 2rem;
   padding: 6rem 0;
-  height: 80vh;
+  height: 100vh;
+  margin-bottom: 2rem;
 }
 
 .chat {
@@ -539,9 +541,9 @@ textarea {
 }
 
 @media (max-width: 1440px) {
-  /* .container {
+  .container {
     grid-template-columns: 30vw auto;
-  } */
+  }
   form {
     width: 80%;
   }
@@ -551,20 +553,20 @@ textarea {
 }
 
 @media (max-width: 1052px) {
-  /* .container {
+  .container {
     grid-template-columns: 40vw auto;
-  } */
+  }
   .message {
     max-width: 70vw;
   }
 }
 
 @media (max-width: 860px) {
-  /* .container {
+  .container {
     grid-template-columns: 60vw auto;
-  } */
+  }
   .dull {
-    display: block;
+    display: flex;
   }
   .del img {
     opacity: 1 !important;
@@ -584,9 +586,9 @@ textarea {
   body {
     background-color: #181818;
   }
-  /* .container {
+  .container {
     grid-template-columns: 90vw auto;
-  } */
+  }
   form {
     flex-direction: column;
     border-radius: 4rem 4rem 0 0;
@@ -604,6 +606,8 @@ textarea {
   .chat {
     width: 100%;
     padding: 2rem;
+    margin-bottom: 30rem;
+    margin-top: 6rem;
   }
 
   form {
@@ -611,9 +615,13 @@ textarea {
     bottom: 0%;
   }
   .main {
-    height: 85vh;
+    height: 100vh;
   }
   .window {
     width: 60vw;
+  }
+  .chat-box {
+    margin-bottom: 18rem;
+    padding: 0;
   }
 }

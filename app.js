@@ -44,6 +44,7 @@ window.addEventListener("load", () => {
     loader.style.opacity = "0";
     input.focus();
     heading.textContent = headings[Math.floor(Math.random() * headings.length)];
+    container.style.pointerEvents = "auto";
   }, 1000);
   hamIcon[0]?.click();
   loadHistory();
@@ -52,7 +53,14 @@ window.addEventListener("load", () => {
 const toggleOpenBoxVisibility = () => {
   const openBox = document.querySelector(".open-box");
   const hisBoxes = document.querySelectorAll(".his-box");
-  if (openBox) openBox.style.display = hisBoxes.length > 0 ? "none" : "";
+
+  if (openBox) {
+    if (hisBoxes.length === 0) {
+      openBox.style.display = "flex"; // or "block" based on your design
+    } else {
+      openBox.style.display = "none";
+    }
+  }
 };
 
 newChatBtn.addEventListener("click", () => {
@@ -147,7 +155,7 @@ const getAnswer = async (message, botText) => {
     botText.textContent = reply.replace(/[*\/\\']/g, "").trim();
     chatScroll.scrollTop = chatBox.scrollHeight;
   } catch {
-    botText.textContent = "404 Error : Something went wrong. Pls try again";
+    botText.textContent = "505 Error : Something went wrong. Pls try again";
     botText.classList.add("red");
     chatScroll.scrollTop = chatBox.scrollHeight;
   }
@@ -197,7 +205,7 @@ const addDiv = () => {
 
     getAnswer(message, botText);
 
-    if (!firstMessageAdded) {
+    if (!firstMessageAdded && message) {
       const id = generateId();
       history.innerHTML += createHistoryBox(id, message);
       const oldHistory = JSON.parse(
@@ -238,9 +246,17 @@ document.addEventListener("keyup", (e) => {
 
 const loadHistory = () => {
   history.innerHTML = "";
-  const saved = JSON.parse(localStorage.getItem("chatHistory") || "[]");
+  let saved = JSON.parse(localStorage.getItem("chatHistory") || "[]");
+
+  // Filter out invalid or corrupted entries
+  saved = saved.filter(
+    (msg) => msg && msg.text && typeof msg.text === "string"
+  );
+
   saved.forEach((msg) => {
     history.innerHTML += createHistoryBox(msg.id, msg.text);
   });
+
+  localStorage.setItem("chatHistory", JSON.stringify(saved)); // Save cleaned history
   toggleOpenBoxVisibility();
 };
