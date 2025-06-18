@@ -5,7 +5,6 @@ const hamIcon = document.querySelectorAll(".ham");
 const container = document.querySelector(".container");
 const dHidden = document.querySelector(".d-hidden");
 const up = document.querySelector(".up");
-const to = document.querySelectorAll(".to");
 const chatBox = document.querySelector(".chat");
 const history = document.querySelector(".history");
 const chatScroll = document.querySelector(".chat-box");
@@ -22,6 +21,7 @@ const openBox = document.querySelector(".open-box");
 const picker = document.getElementById("picker");
 const toggleButton = document.getElementById("toggleButton");
 
+let allowed = true;
 let firstMessageAdded = false;
 let hisBoxToDelete = null;
 let deleteTextContent = "";
@@ -77,10 +77,6 @@ picker.addEventListener("emoji-click", (event) => {
   input.value += event.detail.unicode;
 });
 
-picker.addEventListener("emoji-click", (event) => {
-  input.value += event.detail.unicode;
-});
-
 window.addEventListener("load", () => {
   setTimeout(() => {
     loader.style.opacity = "0";
@@ -130,10 +126,10 @@ history.addEventListener("mouseout", (e) => {
 });
 
 history.addEventListener("click", (e) => {
+  hisBoxToDelete = e.target.closest(".his-box");
+  const inputBox = hisBoxToDelete.querySelector(".his-text");
   if (e.target.closest(".del")) {
     container.style.pointerEvents = "none";
-    hisBoxToDelete = e.target.closest(".his-box");
-    const inputBox = hisBoxToDelete.querySelector(".his-text");
     deleteTextContent = inputBox?.value.trim();
     windowBox.style.opacity = "1";
     windowBox.style.pointerEvents = "auto";
@@ -141,14 +137,26 @@ history.addEventListener("click", (e) => {
     container.style.opacity = "0.9";
     container.style.userSelect = "none";
   } else if (e.target.closest(".to")) {
-    if (window.innerWidth <= 860) classToggle();
-    const hisBox = e.target.closest(".his-box");
-    const hisText = hisBox?.querySelector(".his-text");
-    const message = hisText?.value.trim();
-    if (message) {
-      input.value = message;
-      addDiv();
-    }
+    allowed = false;
+    inputBox.removeAttribute("disabled");
+    inputBox.focus();
+    inputBox.select();
+    const handleEnter = (event) => {
+      if (event.key === "Enter") {
+        inputBox.setAttribute("disabled", "true");
+        document.removeEventListener("keyup", handleEnter);
+
+        const updatedText = inputBox.value.trim();
+        const id = hisBoxToDelete.dataset.id;
+
+        let saved = JSON.parse(localStorage.getItem("chatHistory") || "[]");
+        saved = saved.map((msg) =>
+          msg.id === id ? { ...msg, text: updatedText } : msg
+        );
+        localStorage.setItem("chatHistory", JSON.stringify(saved));
+      }
+    };
+    document.addEventListener("keyup", handleEnter);
   }
 });
 
@@ -221,7 +229,7 @@ const createHistoryBox = (id, text) => {
         <img alt="more" src="icons/mini-ham.svg" />
       </div>
       <div class="transition">
-        <span class="to"><img alt="to-btn" src="icons/to.svg" />Run</span>
+        <span class="to"><img alt="to-btn" src="icons/to.svg" />Edit</span>
         <span class="del">
           <img alt="del-btn" src="icons/del.svg" />
           <font color="#ddd">Delete</font>
@@ -257,7 +265,7 @@ const addDiv = () => {
 
     getAnswer(message, botText);
 
-    if (!firstMessageAdded && message) {
+    if (!firstMessageAdded && message && allowed === true) {
       const id = generateId();
 
       const isRandom = (msg) => {
