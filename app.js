@@ -28,6 +28,10 @@ let deleteTextContent = "";
 
 const apiUrl = "http://localhost:3000/ask";
 
+if (!openBox) {
+  console.warn("openBox is null. Did you forget .open-box in HTML?");
+}
+
 const headings = [
   "What are you working on?",
   "Hi there, how can I help you?",
@@ -58,6 +62,8 @@ const loadHistory = () => {
 };
 
 picker.style.height = "0";
+picker.style.scale = "0";
+picker.style.opacity = "0";
 
 let isPickerOpen = false;
 
@@ -66,11 +72,13 @@ toggleButton.addEventListener("click", () => {
 
   if (isPickerOpen) {
     picker.style.height = "30rem";
+    picker.style.scale = "1";
+    picker.style.opacity = "1";
   } else {
     picker.style.height = "0";
+    picker.style.scale = "0.5";
+    picker.style.opacity = "0";
   }
-
-  form.classList.toggle("border");
 });
 
 picker.addEventListener("emoji-click", (event) => {
@@ -127,8 +135,13 @@ history.addEventListener("mouseout", (e) => {
 
 history.addEventListener("click", (e) => {
   hisBoxToDelete = e.target.closest(".his-box");
+  const box = e.target.closest(".his-box");
   const inputBox = hisBoxToDelete.querySelector(".his-text");
+  const transitionEl = box?.querySelector(".transition");
+
   if (e.target.closest(".del")) {
+    if (transitionEl) transitionEl.classList.remove("hidden");
+
     container.style.pointerEvents = "none";
     deleteTextContent = inputBox?.value.trim();
     windowBox.style.opacity = "1";
@@ -141,22 +154,33 @@ history.addEventListener("click", (e) => {
     inputBox.removeAttribute("disabled");
     inputBox.focus();
     inputBox.select();
+    const saveEdit = () => {
+      inputBox.setAttribute("disabled", "true");
+      document.removeEventListener("keyup", handleEnter);
+      document.removeEventListener("click", handleClickAway, true);
+
+      const updatedText = inputBox.value.trim();
+      const id = hisBoxToDelete.dataset.id;
+
+      let saved = JSON.parse(localStorage.getItem("chatHistory") || "[]");
+      saved = saved.map((msg) =>
+        msg.id === id ? { ...msg, text: updatedText } : msg
+      );
+      localStorage.setItem("chatHistory", JSON.stringify(saved));
+    };
     const handleEnter = (event) => {
       if (event.key === "Enter") {
-        inputBox.setAttribute("disabled", "true");
-        document.removeEventListener("keyup", handleEnter);
-
-        const updatedText = inputBox.value.trim();
-        const id = hisBoxToDelete.dataset.id;
-
-        let saved = JSON.parse(localStorage.getItem("chatHistory") || "[]");
-        saved = saved.map((msg) =>
-          msg.id === id ? { ...msg, text: updatedText } : msg
-        );
-        localStorage.setItem("chatHistory", JSON.stringify(saved));
+        saveEdit();
       }
     };
+    const handleClickAway = (event) => {
+      if (!inputBox.contains(event.target)) {
+        saveEdit();
+      }
+    };
+
     document.addEventListener("keyup", handleEnter);
+    document.addEventListener("click", handleClickAway, true);
   }
 });
 
@@ -292,10 +316,18 @@ const addDiv = () => {
   }
 };
 
+const transform = () => {
+  form.style.transform = "translateY(0)";
+};
+
 up.addEventListener("click", (e) => {
+  picker.style.height = "0";
+  picker.style.opacity = "0";
+  picker.style.scale = "0";
   e.preventDefault();
   addDiv();
   input.focus();
+  transform();
 });
 
 form.addEventListener("click", () => {
@@ -305,6 +337,10 @@ form.addEventListener("click", () => {
 document.addEventListener("keyup", (e) => {
   if (e.key === "Enter") {
     addDiv();
+    transform();
+    picker.style.height = "0";
+    picker.style.opacity = "0";
+    picker.style.scale = "0";
   } else if (e.key === "/") {
     input.focus();
   } else if (e.ctrlKey && e.key.toLowerCase() === "b") {
