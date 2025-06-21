@@ -281,7 +281,7 @@ const getAnswer = async (message, botText) => {
     botText.textContent = reply;
     chatScroll.scrollTop = chatBox.scrollHeight;
   } catch (error) {
-    botText.textContent = `Error: ${error.message}`;
+    botText.textContent = `503 Error: Ops! Something went wrong, Pls try again!`;
     botText.classList.add("red");
     chatScroll.scrollTop = chatBox.scrollHeight;
   }
