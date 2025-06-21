@@ -20,13 +20,17 @@ const newChatBtn = document.querySelector(".new");
 const openBox = document.querySelector(".open-box");
 const picker = document.getElementById("picker");
 const toggleButton = document.getElementById("toggleButton");
+const fileInput = document.querySelector(".file-input");
+const fileButton = document.querySelector(".link");
+const fileDiv = document.querySelector(".file");
 
 let allowed = true;
 let firstMessageAdded = false;
 let hisBoxToDelete = null;
 let deleteTextContent = "";
 
-const apiUrl = "http://localhost:3000/ask";
+const apiKey =
+  "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";
 
 if (!openBox) {
   console.warn("openBox is null. Did you forget .open-box in HTML?");
@@ -45,6 +49,7 @@ const headings = [
   "What are we coding today?",
   "What's your mission today?",
 ];
+
 const loadHistory = () => {
   history.innerHTML = "";
   let saved = JSON.parse(localStorage.getItem("chatHistory") || "[]");
@@ -94,6 +99,32 @@ window.addEventListener("load", () => {
   hamIcon[0]?.click();
   input.focus();
   loadHistory();
+});
+
+fileInput.addEventListener("change", (event) => {
+  const file = event.target.files[0];
+
+  if (file) {
+    const reader = new FileReader();
+    if (!file.type.match("image.*")) {
+      alert("Please select an image file");
+      return;
+    }
+
+    reader.onload = function (e) {
+      const base64String = e.target.result;
+      const imgElement = document.createElement("img");
+      fileDiv.appendChild(imgElement);
+      imgElement.classList.add("selectedImage");
+      imgElement.src = base64String;
+    };
+
+    reader.readAsDataURL(file);
+  }
+});
+
+fileButton.addEventListener("click", () => {
+  fileInput.click();
 });
 
 const toggleOpenBoxVisibility = () => {
@@ -229,17 +260,28 @@ dull.addEventListener("click", classToggle);
 
 const getAnswer = async (message, botText) => {
   try {
-    const response = await fetch(apiUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message }),
-    });
+    const response = await fetch(
+      "https://openrouter.ai/api/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        // "HTTP-Referer": "http://localhost",
+        body: JSON.stringify({
+          model: "openai/gpt-3.5-turbo",
+          messages: [{ role: "user", content: message }],
+        }),
+      }
+    );
+
     const data = await response.json();
     const reply = data.choices[0].message.content;
-    botText.textContent = reply.replace(/[*\/\\']/g, "").trim();
+    botText.textContent = reply;
     chatScroll.scrollTop = chatBox.scrollHeight;
-  } catch {
-    botText.textContent = "505 Error : Something went wrong. Pls try again";
+  } catch (error) {
+    botText.textContent = `Error: ${error.message}`;
     botText.classList.add("red");
     chatScroll.scrollTop = chatBox.scrollHeight;
   }
@@ -269,6 +311,8 @@ const addDiv = () => {
   const message = input.value.trim();
   if (message !== "") {
     const user = document.createElement("div");
+    form.style.transform = "translateY(0)";
+
     chatBox.appendChild(user);
     const text = document.createElement("div");
     user.appendChild(text);
@@ -316,10 +360,6 @@ const addDiv = () => {
   }
 };
 
-const transform = () => {
-  form.style.transform = "translateY(0)";
-};
-
 up.addEventListener("click", (e) => {
   picker.style.height = "0";
   picker.style.opacity = "0";
@@ -327,7 +367,6 @@ up.addEventListener("click", (e) => {
   e.preventDefault();
   addDiv();
   input.focus();
-  transform();
 });
 
 form.addEventListener("click", () => {
@@ -337,7 +376,6 @@ form.addEventListener("click", () => {
 document.addEventListener("keyup", (e) => {
   if (e.key === "Enter") {
     addDiv();
-    transform();
     picker.style.height = "0";
     picker.style.opacity = "0";
     picker.style.scale = "0";
