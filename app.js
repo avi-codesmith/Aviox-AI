@@ -123,7 +123,8 @@ fileInput.addEventListener("change", (event) => {
   }
 });
 
-fileButton.addEventListener("click", () => {
+fileButton.addEventListener("click", (e) => {
+  e.preventDefault();
   fileInput.click();
 });
 
@@ -268,7 +269,6 @@ const getAnswer = async (message, botText) => {
           Authorization: `Bearer ${apiKey}`,
           "Content-Type": "application/json",
         },
-        // "HTTP-Referer": "http://localhost",
         body: JSON.stringify({
           model: "openai/gpt-3.5-turbo",
           messages: [{ role: "user", content: message }],
