@@ -30,7 +30,7 @@ let hisBoxToDelete = null;
 let deleteTextContent = "";
 
 const apiKey =
-  "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";
+  "sk-or-v1-4ec9893b4603c3b14a9b9dd94f09403ed355c2565c6155f94e5e0db9a34663550";
 
 if (!openBox) {
   console.warn("openBox is null. Did you forget .open-box in HTML?");
@@ -259,7 +259,7 @@ const classToggle = () => {
 hamIcon.forEach((e) => e.addEventListener("click", classToggle));
 dull.addEventListener("click", classToggle);
 
-const getAnswer = async (message, botText) => {
+const getAnswer = async (message, botText, botElement) => {
   try {
     const response = await fetch(
       "https://openrouter.ai/api/v1/chat/completions",
@@ -284,17 +284,19 @@ const getAnswer = async (message, botText) => {
     botText.textContent = `503 Error: Ops! Something went wrong, Pls try again!`;
     botText.classList.add("red");
     chatScroll.scrollTop = chatBox.scrollHeight;
+    botElement.classList.add("redIcon");
   }
+  botElement.classList.add("stop");
 };
 
 const createHistoryBox = (id, text) => {
   return `
-    <div class="his-box" data-id="${id}">
+    <div class="his-box box" data-id="${id}">
       <input disabled class="his-text" value="${text}">
       <div class="mini-ham">
         <img alt="more" src="icons/mini-ham.svg" />
       </div>
-      <div class="transition">
+      <div class="transition box">
         <span class="to"><img alt="to-btn" src="icons/to.svg" />Edit</span>
         <span class="del">
           <img alt="del-btn" src="icons/del.svg" />
@@ -331,7 +333,7 @@ const addDiv = () => {
     botText.textContent = "Thinking...";
     chatScroll.scrollTop = chatBox.scrollHeight;
 
-    getAnswer(message, botText);
+    getAnswer(message, botText, bot);
 
     if (!firstMessageAdded && message && allowed === true) {
       const id = generateId();
