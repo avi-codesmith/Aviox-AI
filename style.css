@@ -75,7 +75,7 @@ body {
 }
 
 .nav {
-  background-color: #121212;
+  background-color: #161616;
   height: 100%;
   padding: 2rem;
   padding-right: 0;
@@ -333,7 +333,6 @@ body {
   align-items: center;
   flex-direction: column;
   gap: 4rem;
-  margin-bottom: 18rem;
 }
 
 .chat-box::-webkit-scrollbar {
@@ -379,16 +378,16 @@ body {
 }
 
 .user {
-  background-color: #1d1d1d;
   border-radius: 2rem;
   align-self: flex-end;
-  border-radius: 2rem 2rem 0 2rem;
+  border-radius: 2rem 2rem 0.6rem 2rem;
+  background-color: #1d1d1d;
 }
 
 .bot {
   align-self: flex-start;
   justify-self: flex-start;
-  border-radius: 0 2rem 2rem 2rem;
+  border-radius: 0.6rem 2rem 2rem 2rem;
   position: relative;
 }
 
@@ -409,6 +408,15 @@ body {
 
 .bot.stop::after {
   animation: none !important;
+}
+
+.chatImage {
+  max-width: 40rem;
+  height: 90%;
+  object-fit: cover;
+  margin: 0;
+  padding: 0;
+  border-radius: 0.6rem;
 }
 
 form {
@@ -495,7 +503,6 @@ textarea {
 
 .red {
   color: #fa5252;
-  border-radius: 0 2rem 2rem 2rem;
 }
 
 .bot.redIcon::after {
@@ -665,6 +672,10 @@ emoji-picker::-webkit-scrollbar {
   .heading {
     position: fixed;
   }
+
+  .chatImage {
+    max-width: 40rem;
+  }
 }
 
 @media (max-width: 541px) {
@@ -714,6 +725,9 @@ emoji-picker::-webkit-scrollbar {
   }
   .chat-box {
     padding: 0;
+    margin-bottom: 14rem;
+  }
+  .chatImage {
+    max-width: 25rem;
   }
 }
-/* =====can you implement the best black and white  */

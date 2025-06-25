@@ -29,9 +29,6 @@ let firstMessageAdded = false;
 let hisBoxToDelete = null;
 let deleteTextContent = "";
 
-const apiKey =
-  "sk-or-v1-4ec9893b4603c3b14a9b9dd94f09403ed355c2565c6155f94e5e0db9a34663550";
-
 if (!openBox) {
   console.warn("openBox is null. Did you forget .open-box in HTML?");
 }
@@ -101,6 +98,8 @@ window.addEventListener("load", () => {
   loadHistory();
 });
 
+let base64Image = null;
+
 fileInput.addEventListener("change", (event) => {
   const file = event.target.files[0];
 
@@ -112,11 +111,11 @@ fileInput.addEventListener("change", (event) => {
     }
 
     reader.onload = function (e) {
-      const base64String = e.target.result;
+      base64Image = e.target.result;
       const imgElement = document.createElement("img");
-      fileDiv.appendChild(imgElement);
       imgElement.classList.add("selectedImage");
-      imgElement.src = base64String;
+      imgElement.src = base64Image;
+      fileDiv.appendChild(imgElement);
     };
 
     reader.readAsDataURL(file);
@@ -259,35 +258,52 @@ const classToggle = () => {
 hamIcon.forEach((e) => e.addEventListener("click", classToggle));
 dull.addEventListener("click", classToggle);
 
-const getAnswer = async (message, botText, botElement) => {
+async function getAnswer(message, base64Image, botText, botElement) {
   try {
-    const response = await fetch(
-      "https://openrouter.ai/api/v1/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "openai/gpt-3.5-turbo",
-          messages: [{ role: "user", content: message }],
-        }),
-      }
-    );
+    const content = [{ type: "text", text: message }];
+    if (base64Image) {
+      content.push({
+        type: "image_url",
+        image_url: { url: base64Image },
+      });
+    }
 
-    const data = await response.json();
-    const reply = data.choices[0].message.content;
-    botText.textContent = reply;
+    const payload = {
+      model: "opengvlab/internvl3-14b:free",
+      messages: [{ role: "user", content }],
+    };
+    console.log("Sending payload:", payload);
+
+    const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    console.log("HTTP Status:", res.status);
+    const data = await res.json();
+    console.log("Response:", data);
+
+    if (res.ok && data.choices?.[0]?.message?.content) {
+      botText.textContent = data.choices[0].message.content;
+    } else {
+      botText.textContent = "503 Error: Something went wrong! Pls try again.";
+      botText.classList.add("red");
+    }
+
     chatScroll.scrollTop = chatBox.scrollHeight;
-  } catch (error) {
-    botText.textContent = `503 Error: Ops! Something went wrong, Pls try again!`;
+    base64Image = null;
+  } catch (e) {
+    console.error(e);
+    botText.textContent = "503 Error: Something went wrong! Pls try again.";
     botText.classList.add("red");
     chatScroll.scrollTop = chatBox.scrollHeight;
-    botElement.classList.add("redIcon");
   }
   botElement.classList.add("stop");
-};
+}
 
 const createHistoryBox = (id, text) => {
   return `
@@ -311,29 +327,45 @@ const generateId = () =>
 
 const addDiv = () => {
   const message = input.value.trim();
-  if (message !== "") {
+
+  if (message !== "" || base64Image) {
     const user = document.createElement("div");
-    form.style.transform = "translateY(0)";
+    user.classList.add("message", "user");
+
+    if (message !== "") {
+      const text = document.createElement("div");
+      text.classList.add("text", "bg");
+      text.textContent = message;
+      user.appendChild(text);
+    }
+
+    if (base64Image) {
+      const img = document.createElement("img");
+      img.src = base64Image;
+      img.alt = "Uploaded Image";
+      img.classList.add("chatImage");
+      user.style.backgroundColor = "transparent";
+      user.appendChild(img);
+    }
 
     chatBox.appendChild(user);
-    const text = document.createElement("div");
-    user.appendChild(text);
-    user.classList.add("message", "user");
-    text.classList.add("text", "bg");
-    text.textContent = message;
+    form.style.transform = "translateY(0)";
     input.value = "";
     heading.classList.add("hide");
 
     const bot = document.createElement("div");
-    chatBox.appendChild(bot);
-    const botText = document.createElement("div");
-    bot.appendChild(botText);
     bot.classList.add("message", "bot");
+
+    const botText = document.createElement("div");
     botText.classList.add("text", "bg2");
     botText.textContent = "Thinking...";
+
+    bot.appendChild(botText);
+    chatBox.appendChild(bot);
+
     chatScroll.scrollTop = chatBox.scrollHeight;
 
-    getAnswer(message, botText, bot);
+    getAnswer(message, base64Image, botText, bot);
 
     if (!firstMessageAdded && message && allowed === true) {
       const id = generateId();
@@ -359,15 +391,25 @@ const addDiv = () => {
       toggleOpenBoxVisibility();
       firstMessageAdded = true;
     }
+
+    base64Image = null;
   }
 };
 
 up.addEventListener("click", (e) => {
+  e.preventDefault();
+
   picker.style.height = "0";
   picker.style.opacity = "0";
   picker.style.scale = "0";
-  e.preventDefault();
+
   addDiv();
+
+  const selectedImage = document.querySelector(".selectedImage");
+  selectedImage.remove();
+
+  base64Image = null;
+
   input.focus();
 });
 
