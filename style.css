@@ -123,6 +123,66 @@ body {
   width: 2.4rem;
 }
 
+.changer {
+  position: relative;
+  cursor: pointer;
+}
+
+.changer:hover .imvisible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.model {
+  height: 1.8rem !important;
+  width: 1.8rem !important;
+  margin-left: 1rem;
+  margin-bottom: 0.6rem;
+}
+
+.changer:hover .model {
+  transform: rotate(180deg) !important;
+}
+
+.imvisible {
+  position: absolute;
+  bottom: -268%;
+  left: -5%;
+  background-color: #191919;
+  padding: 1rem;
+  width: 22rem;
+  border-radius: 1rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.imvisible div {
+  padding: 0.8rem;
+  border-radius: 0.8rem;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.imvisible div:hover {
+  background-color: #232323;
+  cursor: pointer;
+}
+
+.imvisible div:focus {
+  background-color: #232323;
+}
+
+.imvisible div:active {
+  background-color: #111;
+}
+
+.imvisible a {
+  text-decoration: none;
+  font-size: 1.6rem;
+  color: #fff;
+}
+
 .history-wrapper {
   height: 80vh;
   display: flex;

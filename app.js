@@ -20,7 +20,7 @@ const newChatBtn = document.querySelector(".new");
 const openBox = document.querySelector(".open-box");
 const picker = document.getElementById("picker");
 const toggleButton = document.getElementById("toggleButton");
-const fileInput = document.querySelector(".file-input");
+const fileWrapper = document.querySelector(".file-input");
 const fileButton = document.querySelector(".link");
 const fileDiv = document.querySelector(".file");
 
@@ -29,9 +29,13 @@ let firstMessageAdded = false;
 let hisBoxToDelete = null;
 let deleteTextContent = "";
 
-if (!openBox) {
-  console.warn("openBox is null. Did you forget .open-box in HTML?");
+if (window.location.pathname.includes("image-generator")) {
+  if (fileWrapper) fileWrapper.style.display = "none";
+  console.log(fileWrapper);
 }
+
+const apiKey =
+  "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";
 
 const headings = [
   "What are you working on?",
@@ -100,7 +104,7 @@ window.addEventListener("load", () => {
 
 let base64Image = null;
 
-fileInput.addEventListener("change", (event) => {
+fileWrapper.addEventListener("change", (event) => {
   const file = event.target.files[0];
 
   if (file) {
@@ -124,7 +128,7 @@ fileInput.addEventListener("change", (event) => {
 
 fileButton.addEventListener("click", (e) => {
   e.preventDefault();
-  fileInput.click();
+  fileWrapper.click();
 });
 
 const toggleOpenBoxVisibility = () => {
@@ -269,7 +273,7 @@ async function getAnswer(message, base64Image, botText, botElement) {
     }
 
     const payload = {
-      model: "opengvlab/internvl3-14b:free",
+      model: "tngtech/deepseek-r1t-chimera:free",
       messages: [{ role: "user", content }],
     };
     console.log("Sending payload:", payload);
@@ -287,10 +291,16 @@ async function getAnswer(message, base64Image, botText, botElement) {
     const data = await res.json();
     console.log("Response:", data);
 
-    if (res.ok && data.choices?.[0]?.message?.content) {
-      botText.textContent = data.choices[0].message.content;
+    if (res.ok) {
+      if (data.choices?.[0]?.message?.content) {
+        botText.textContent = data.choices[0].message.content;
+      } else {
+        botText.textContent = "Received unexpected response format from API";
+        botText.classList.add("red");
+      }
     } else {
-      botText.textContent = "503 Error: Something went wrong! Pls try again.";
+      const errorMessage = data.error?.message || res.statusText;
+      botText.textContent = `Error: ${errorMessage}`;
       botText.classList.add("red");
     }
 
