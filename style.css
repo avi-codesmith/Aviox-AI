@@ -58,7 +58,7 @@ body {
 
 .container {
   display: grid;
-  grid-template-columns: 20vw auto;
+  grid-template-columns: 0 auto;
   grid-template-rows: 100vh;
   position: relative;
   justify-items: center;
@@ -71,14 +71,13 @@ body {
 }
 
 .container.jump {
-  grid-template-columns: 0 100vw;
+  grid-template-columns: 20vw auto;
 }
 
 .nav {
   background-color: #161616;
   height: 100%;
-  padding: 2rem;
-  padding-right: 0;
+  padding: 0;
   width: 100%;
   transition: 0.3s ease;
   z-index: 999;
@@ -90,7 +89,8 @@ body {
 }
 
 .padding {
-  padding: 0;
+  padding: 2rem;
+  padding-right: 0;
 }
 
 .header {
@@ -361,14 +361,14 @@ body {
   position: fixed;
   top: 2%;
   left: 2%;
-  opacity: 0;
+  opacity: 1;
   transition: all 0.1s ease;
 }
 
-.d-hidden.opacity {
+/* .d-hidden.opacity {
   opacity: 1;
   z-index: 9;
-}
+} */
 
 .d-hidden .ham {
   margin-right: 4rem;
@@ -578,13 +578,14 @@ textarea {
   top: 0;
   right: 0;
   z-index: 9;
-  opacity: 1;
+  opacity: 0;
   display: none;
+  pointer-events: none;
 }
 
 .opacity2 {
-  opacity: 0;
-  pointer-events: none;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .trans {
@@ -690,10 +691,87 @@ emoji-picker::-webkit-scrollbar {
   border-radius: 4rem 0 4rem 4rem !important;
 }
 
-@media (max-width: 1440px) {
-  .container {
-    grid-template-columns: 30vw auto;
+/* for Aviox img generator */
+
+.random-btn {
+  font-size: 1.6rem;
+  color: #b172ff;
+  display: flex;
+  gap: 1rem;
+  padding: 0.6rem 1rem;
+  border-radius: 2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: none;
+}
+
+.random-btn:hover {
+  background: linear-gradient(90deg, #21a2ff56, #b172ff56, #ff4fd061);
+}
+
+.image-generator a {
+  background: linear-gradient(90deg, #21a1ff, #b172ff, #ff4fcf);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-fill-color: transparent;
+}
+
+.image-generator:hover {
+  background: linear-gradient(90deg, #21a2ff56, #b172ff56, #ff4fd061);
+}
+
+.heading.gradient {
+  background: linear-gradient(90deg, #21a1ff, #ff4fcf);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-fill-color: transparent;
+}
+
+.sparkle {
+  position: absolute;
+
+  width: 1.5rem;
+  height: 1.5rem;
+  opacity: 0;
+  animation: sparkleFly 1.8s linear forwards;
+  z-index: 1000;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.sparkle {
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  opacity: 0;
+  animation: sparkleFly 2s ease-in-out forwards;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.up.gradientBg {
+  background: linear-gradient(90deg, #21a1ff, #ff4fcf);
+}
+
+@keyframes sparkleFly {
+  0% {
+    transform: translate(0, 0) scale(2);
+    opacity: 0;
   }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(100vw, 200vh) scale(200);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 1440px) {
+  .container.jump {
+    grid-template-columns: 20vw auto;
+  }
+
   form {
     width: 80%;
   }
@@ -708,7 +786,7 @@ emoji-picker::-webkit-scrollbar {
 }
 
 @media (max-width: 1052px) {
-  .container {
+  .container.jump {
     grid-template-columns: 40vw auto;
   }
   .message {
@@ -717,7 +795,7 @@ emoji-picker::-webkit-scrollbar {
 }
 
 @media (max-width: 860px) {
-  .container {
+  .container.jump {
     grid-template-columns: 60vw auto;
   }
   .dull {
@@ -745,8 +823,8 @@ emoji-picker::-webkit-scrollbar {
   body {
     background-color: #181818;
   }
-  .container {
-    grid-template-columns: 90vw auto;
+  .container.jump {
+    grid-template-columns: 80vw auto;
   }
   form {
     border-radius: 4rem 4rem 0 0;

@@ -23,48 +23,97 @@ const toggleButton = document.getElementById("toggleButton");
 const fileWrapper = document.querySelector(".file-input");
 const fileButton = document.querySelector(".link");
 const fileDiv = document.querySelector(".file");
+const emojiBtn = document.getElementById("inputContainer");
+const imageGenerator = document.querySelector(".image-generator");
+const randomButton = document.querySelector(".random-btn");
+const main = document.querySelector(".main");
 
 let allowed = true;
 let firstMessageAdded = false;
 let hisBoxToDelete = null;
 let deleteTextContent = "";
+let isImageGenerator = false;
 
-if (window.location.pathname.includes("image-generator")) {
-  if (fileWrapper) fileWrapper.style.display = "none";
-  console.log(fileWrapper);
+const headings = [
+  "What’s up? Aviox here!",
+  "Need help? Aviox is here!",
+  "What are we building today?",
+  "What's on your mind? tell Aviox",
+  "Hey! Let’s create with Aviox.",
+  "Aviox is ready. You?",
+  "How can Aviox help You?",
+  "Let’s start something cool with Aviox!",
+  "What’s today’s mission?",
+  "Coding with Aviox today?",
+  "Let’s do this! Aviox here.",
+];
+
+const imageGeneratorHeadings = [
+  "Ready to imagine? Aviox here!",
+  "Let’s make some art with Aviox!",
+  "Describe your image with Aviox!",
+  "Got an idea? Let’s draw it!",
+  "Image time! share with Aviox.",
+  "Let’s create your vision with Aviox!",
+  "Write a prompt with Aviox!",
+];
+
+function showSparkles(e) {
+  const sparkleContainer = document.querySelector(".sparkle-container");
+  sparkleContainer.innerHTML = "";
+
+  const img = document.createElement("img");
+  img.src = "icons/sparkle.svg";
+  img.alt = "sparkle";
+  img.classList.add("sparkle");
+
+  img.style.top = "100px";
+  img.style.left = "180px";
+
+  sparkleContainer.appendChild(img);
 }
+
+imageGenerator.addEventListener("click", () => {
+  isImageGenerator = true;
+  newChatBtn.click();
+  heading.classList.add("gradient");
+  up.classList.add("gradientBg");
+  if (fileButton && emojiBtn && input && randomButton) {
+    fileButton.style.display = "none";
+    emojiBtn.style.display = "none";
+    randomButton.style.display = "flex";
+    input.placeholder = "Describe the image you want";
+  }
+  heading.textContent =
+    imageGeneratorHeadings[
+      Math.floor(Math.random() * imageGeneratorHeadings.length)
+    ];
+  showSparkles();
+});
+
+const error = () => {
+  botText.textContent = "503 Error: Something went wrong! Pls try again.";
+  botText.classList.add("red");
+};
 
 const apiKey =
   "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";
 
-const headings = [
-  "What are you working on?",
-  "Hi there, how can I help you?",
-  "What's on the agenda today?",
-  "What's on your mind today?",
-  "Hey! What’s cooking in your brain today?",
-  "Let’s build something amazing!",
-  "How can I assist you today?",
-  "Need a hand with something?",
-  "Time to get things done. What’s first?",
-  "What are we coding today?",
-  "What's your mission today?",
-];
-
 const loadHistory = () => {
-  history.innerHTML = "";
   let saved = JSON.parse(localStorage.getItem("chatHistory") || "[]");
 
-  saved = saved.filter(
-    (msg) => msg && msg.text && typeof msg.text === "string"
-  );
+  if (saved?.length > 0) {
+    history.innerHTML = "";
 
-  saved.forEach((msg) => {
-    history.innerHTML += createHistoryBox(msg.id, msg.text);
-  });
+    saved = saved.filter((msg) => msg?.text && typeof msg.text === "string");
 
-  localStorage.setItem("chatHistory", JSON.stringify(saved));
-  toggleOpenBoxVisibility();
+    saved.forEach((msg) => {
+      history.innerHTML += createHistoryBox(msg.id, msg.text);
+    });
+
+    localStorage.setItem("chatHistory", JSON.stringify(saved));
+    toggleOpenBoxVisibility();
+  }
 };
 
 picker.style.height = "0";
@@ -94,10 +143,15 @@ picker.addEventListener("emoji-click", (event) => {
 window.addEventListener("load", () => {
   setTimeout(() => {
     loader.style.opacity = "0";
-    heading.textContent = headings[Math.floor(Math.random() * headings.length)];
+
+    heading.textContent = (
+      isImageGenerator ? imageGeneratorHeadings : headings
+    )[Math.floor(Math.random() * imageGeneratorHeadings.length)];
+
     container.style.pointerEvents = "auto";
   }, 1000);
-  hamIcon[0]?.click();
+
+  // hamIcon[0]?.click();
   input.focus();
   loadHistory();
 });
@@ -111,18 +165,17 @@ fileWrapper.addEventListener("change", (event) => {
     const reader = new FileReader();
     if (!file.type.match("image.*")) {
       alert("Please select an image file");
-      return;
+    } else {
+      reader.onload = function (e) {
+        base64Image = e.target.result;
+        const imgElement = document.createElement("img");
+        imgElement.classList.add("selectedImage");
+        imgElement.src = base64Image;
+        fileDiv.appendChild(imgElement);
+      };
+
+      reader.readAsDataURL(file);
     }
-
-    reader.onload = function (e) {
-      base64Image = e.target.result;
-      const imgElement = document.createElement("img");
-      imgElement.classList.add("selectedImage");
-      imgElement.src = base64Image;
-      fileDiv.appendChild(imgElement);
-    };
-
-    reader.readAsDataURL(file);
   }
 });
 
@@ -133,24 +186,23 @@ fileButton.addEventListener("click", (e) => {
 
 const toggleOpenBoxVisibility = () => {
   const boxes = document.querySelectorAll(".his-box");
-  console.log("his-box count:", boxes.length);
+  console.log("🚀 ~ toggleOpenBoxVisibility ~ boxes:", boxes);
 
   if (boxes.length == 0) {
     openBox.style.opacity = "1";
-    console.log("No his-boxes → Showing openBox");
   } else {
     openBox.style.opacity = "0";
-    console.log("his-boxes exist → Hiding openBox");
   }
 };
-
-setTimeout(toggleOpenBoxVisibility, 100);
-toggleOpenBoxVisibility();
 
 newChatBtn.addEventListener("click", () => {
   chatBox.innerHTML = "";
   input.value = "";
-  heading.textContent = headings[Math.floor(Math.random() * headings.length)];
+  form.style.transform = " translateY(-280%)";
+  heading.textContent = (isImageGenerator ? imageGeneratorHeadings : headings)[
+    Math.floor(Math.random() * imageGeneratorHeadings.length)
+  ];
+
   heading.classList.remove("hide");
   input.focus();
   firstMessageAdded = false;
@@ -262,7 +314,7 @@ const classToggle = () => {
 hamIcon.forEach((e) => e.addEventListener("click", classToggle));
 dull.addEventListener("click", classToggle);
 
-async function getAnswer(message, base64Image, botText, botElement) {
+async function getAnswer({ message, base64Image, botText, bot }) {
   try {
     const content = [{ type: "text", text: message }];
     if (base64Image) {
@@ -276,7 +328,6 @@ async function getAnswer(message, base64Image, botText, botElement) {
       model: "tngtech/deepseek-r1t-chimera:free",
       messages: [{ role: "user", content }],
     };
-    console.log("Sending payload:", payload);
 
     const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
@@ -287,32 +338,23 @@ async function getAnswer(message, base64Image, botText, botElement) {
       body: JSON.stringify(payload),
     });
 
-    console.log("HTTP Status:", res.status);
     const data = await res.json();
-    console.log("Response:", data);
 
+    bot.classList.add("stop");
     if (res.ok) {
       if (data.choices?.[0]?.message?.content) {
         botText.textContent = data.choices[0].message.content;
       } else {
-        botText.textContent = "Received unexpected response format from API";
-        botText.classList.add("red");
+        error;
       }
     } else {
-      const errorMessage = data.error?.message || res.statusText;
-      botText.textContent = `Error: ${errorMessage}`;
-      botText.classList.add("red");
+      error;
     }
-
     chatScroll.scrollTop = chatBox.scrollHeight;
-    base64Image = null;
   } catch (e) {
-    console.error(e);
-    botText.textContent = "503 Error: Something went wrong! Pls try again.";
-    botText.classList.add("red");
-    chatScroll.scrollTop = chatBox.scrollHeight;
+    error;
   }
-  botElement.classList.add("stop");
+  base64Image = null;
 }
 
 const createHistoryBox = (id, text) => {
@@ -332,8 +374,9 @@ const createHistoryBox = (id, text) => {
     </div>`;
 };
 
-const generateId = () =>
-  Date.now().toString() + Math.random().toString(36).substring(2);
+const generateId = () => {
+  return Date.now().toString() + Math.random().toString(36).substring(2);
+};
 
 const addDiv = () => {
   const message = input.value.trim();
@@ -375,7 +418,7 @@ const addDiv = () => {
 
     chatScroll.scrollTop = chatBox.scrollHeight;
 
-    getAnswer(message, base64Image, botText, bot);
+    getAnswer({ message, base64Image, botText, bot });
 
     if (!firstMessageAdded && message && allowed === true) {
       const id = generateId();

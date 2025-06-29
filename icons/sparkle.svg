@@ -1,0 +1,27 @@
+<svg viewBox="0 0 24 24" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#21a1ff" />
+      <stop offset="50%" stop-color="#b172ff" />
+      <stop offset="100%" stop-color="#ff4fcf" />
+    </linearGradient>
+  </defs>
+
+  <!-- Main balanced sparkle in center -->
+  <path fill="url(#grad)" d="M12 2
+    C12.5 4.2, 13.8 5.5, 16 6
+    C13.8 6.5, 12.5 7.8, 12 10
+    C11.5 7.8, 10.2 6.5, 8 6
+    C10.2 5.5, 11.5 4.2, 12 2
+    Z" />
+
+  <!-- Smaller sparkle at top-left, slightly more left -->
+  <g transform="translate(3, -1) scale(0.4)">
+    <path fill="url(#grad)" d="M12 2
+      C12.5 4.2, 13.8 5.5, 16 6
+      C13.8 6.5, 12.5 7.8, 12 10
+      C11.5 7.8, 10.2 6.5, 8 6
+      C10.2 5.5, 11.5 4.2, 12 2
+      Z" />
+  </g>
+</svg>
