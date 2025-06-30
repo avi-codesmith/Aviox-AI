@@ -637,12 +637,10 @@ textarea {
   overflow: hidden;
   transition: all 0.3s ease-in-out;
   width: 68rem;
+  height: 300px;
   position: absolute;
   bottom: 250%;
   left: -1200%;
-  z-index: 1;
-  scale: 0;
-  opacity: 0;
 
   --box-shadow: 0 5px 24px #fff;
   --background: #101010;
@@ -653,6 +651,7 @@ textarea {
   --emoji-size: 3rem;
   --border-color: #333;
   --border-radius: 24px;
+  z-index: 999;
 }
 
 #search {
@@ -751,6 +750,17 @@ emoji-picker::-webkit-scrollbar {
 
 .up.gradientBg {
   background: linear-gradient(90deg, #21a1ff, #ff4fcf);
+}
+
+.nav .image-generator {
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  width: 90%;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  background-color: #222;
+  font-size: 1.6rem;
+  cursor: pointer;
 }
 
 @keyframes sparkleFly {

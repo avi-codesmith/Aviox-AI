@@ -49,7 +49,7 @@ const imagePrompt = [
   "A Solar Eclipse, Fantasy Art, Turning Day Into Night, With Magic Beams",
   "A Cyber Tree, Pixel Art, In A Server Farm, With Glitch Effects",
   "A Shipwreck, Oil Painting, Underwater, With Glowing Sea Creatures",
-  "A Magical Clock Tower, Fantasy Art, In A Floating City, With Spinning Gears", // Added Prompts
+  "A Magical Clock Tower, Fantasy Art, In A Floating City, With Spinning Gears",
   "A Steampunk Airship, Detailed Illustration, Soaring Over Victorian London, With Gears Turning",
   "A Bioluminescent Cave, Digital Painting, With Shimmering Fungi, And Crystal Formations",
   "An Ancient Spaceship, Concept Art, Buried On An Alien Planet, With Overgrown Flora",

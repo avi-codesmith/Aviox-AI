@@ -24,7 +24,7 @@ const fileWrapper = document.querySelector(".file-input");
 const fileButton = document.querySelector(".link");
 const fileDiv = document.querySelector(".file");
 const emojiBtn = document.getElementById("inputContainer");
-const imageGenerator = document.querySelector(".image-generator");
+const imageGenerator = document.querySelectorAll(".image-generator");
 const randomButton = document.querySelector(".random-btn");
 const main = document.querySelector(".main");
 
@@ -58,7 +58,7 @@ const imageGeneratorHeadings = [
   "Write a prompt with Aviox!",
 ];
 
-function showSparkles(e) {
+function showSparkles() {
   const sparkleContainer = document.querySelector(".sparkle-container");
   sparkleContainer.innerHTML = "";
 
@@ -73,24 +73,25 @@ function showSparkles(e) {
   sparkleContainer.appendChild(img);
 }
 
-imageGenerator.addEventListener("click", () => {
-  isImageGenerator = true;
-  newChatBtn.click();
-  heading.classList.add("gradient");
-  up.classList.add("gradientBg");
-  if (fileButton && emojiBtn && input && randomButton) {
-    fileButton.style.display = "none";
-    emojiBtn.style.display = "none";
-    randomButton.style.display = "flex";
-    input.placeholder = "Describe the image you want";
-  }
-  heading.textContent =
-    imageGeneratorHeadings[
-      Math.floor(Math.random() * imageGeneratorHeadings.length)
-    ];
-  showSparkles();
+imageGenerator.forEach((e) => {
+  e.addEventListener("click", () => {
+    isImageGenerator = true;
+    newChatBtn.click();
+    heading.classList.add("gradient");
+    up.classList.add("gradientBg");
+    if (fileButton && emojiBtn && input && randomButton) {
+      fileButton.style.display = "none";
+      emojiBtn.style.display = "none";
+      randomButton.style.display = "flex";
+      input.placeholder = "Describe the image you want";
+    }
+    heading.textContent =
+      imageGeneratorHeadings[
+        Math.floor(Math.random() * imageGeneratorHeadings.length)
+      ];
+    showSparkles();
+  });
 });
-
 const error = () => {
   botText.textContent = "503 Error: Something went wrong! Pls try again.";
   botText.classList.add("red");
@@ -151,7 +152,6 @@ window.addEventListener("load", () => {
     container.style.pointerEvents = "auto";
   }, 1000);
 
-  // hamIcon[0]?.click();
   input.focus();
   loadHistory();
 });
@@ -377,7 +377,7 @@ const createHistoryBox = (id, text) => {
 const generateId = () => {
   return Date.now().toString() + Math.random().toString(36).substring(2);
 };
-
+showSparkles;
 const addDiv = () => {
   const message = input.value.trim();
 
