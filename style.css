@@ -491,7 +491,6 @@ form {
   cursor: text;
   margin-bottom: 6rem;
   transition: all 0.3s ease-in-out;
-  transform: translateY(-280%);
 }
 
 textarea {

@@ -24,7 +24,7 @@ const fileWrapper = document.querySelector(".file-input");
 const fileButton = document.querySelector(".link");
 const fileDiv = document.querySelector(".file");
 const emojiBtn = document.getElementById("inputContainer");
-const imageGenerator = document.querySelectorAll(".image-generator");
+const imageGenerator = document.querySelector(".image-generator");
 const randomButton = document.querySelector(".random-btn");
 const main = document.querySelector(".main");
 
@@ -58,7 +58,7 @@ const imageGeneratorHeadings = [
   "Write a prompt with Aviox!",
 ];
 
-function showSparkles() {
+function showSparkles(event) {
   const sparkleContainer = document.querySelector(".sparkle-container");
   sparkleContainer.innerHTML = "";
 
@@ -67,15 +67,21 @@ function showSparkles() {
   img.alt = "sparkle";
   img.classList.add("sparkle");
 
-  img.style.top = "100px";
-  img.style.left = "180px";
+  img.style.position = "absolute";
+  img.style.top = `${event.clientY}px`;
+  img.style.left = `${event.clientX}px`;
 
   sparkleContainer.appendChild(img);
 }
 
-imageGenerator.forEach((e) => {
-  e.addEventListener("click", () => {
-    isImageGenerator = true;
+imageGenerator.addEventListener("click", () => {
+  isImageGenerator = true;
+  console.log(isImageGenerator);
+  if (isImageGenerator == true) {
+    history.innerHTML = "";
+    console.log(history);
+
+    console.log(isImageGenerator);
     newChatBtn.click();
     heading.classList.add("gradient");
     up.classList.add("gradientBg");
@@ -89,17 +95,18 @@ imageGenerator.forEach((e) => {
       imageGeneratorHeadings[
         Math.floor(Math.random() * imageGeneratorHeadings.length)
       ];
-    showSparkles();
-  });
+    randomButton.addEventListener("click", () => {
+      const random = Math.floor(Math.random() * imagePrompt.length);
+      input.value = imagePrompt[random]; // ✅ Only one prompt shown at a time
+    });
+  }
+  showSparkles(event);
 });
-const error = () => {
+
+const error = (botText) => {
   botText.textContent = "503 Error: Something went wrong! Pls try again.";
   botText.classList.add("red");
 };
-
-const apiKey =
-  "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";
-
 const loadHistory = () => {
   let saved = JSON.parse(localStorage.getItem("chatHistory") || "[]");
 
@@ -186,8 +193,6 @@ fileButton.addEventListener("click", (e) => {
 
 const toggleOpenBoxVisibility = () => {
   const boxes = document.querySelectorAll(".his-box");
-  console.log("🚀 ~ toggleOpenBoxVisibility ~ boxes:", boxes);
-
   if (boxes.length == 0) {
     openBox.style.opacity = "1";
   } else {
@@ -198,7 +203,6 @@ const toggleOpenBoxVisibility = () => {
 newChatBtn.addEventListener("click", () => {
   chatBox.innerHTML = "";
   input.value = "";
-  form.style.transform = " translateY(-280%)";
   heading.textContent = (isImageGenerator ? imageGeneratorHeadings : headings)[
     Math.floor(Math.random() * imageGeneratorHeadings.length)
   ];
@@ -345,39 +349,39 @@ async function getAnswer({ message, base64Image, botText, bot }) {
       if (data.choices?.[0]?.message?.content) {
         botText.textContent = data.choices[0].message.content;
       } else {
-        error;
+        error(botText);
       }
     } else {
-      error;
+      error(botText);
     }
     chatScroll.scrollTop = chatBox.scrollHeight;
   } catch (e) {
-    error;
+    error(botText);
   }
   base64Image = null;
 }
 
 const createHistoryBox = (id, text) => {
   return `
-    <div class="his-box box" data-id="${id}">
-      <input disabled class="his-text" value="${text}">
-      <div class="mini-ham">
-        <img alt="more" src="icons/mini-ham.svg" />
-      </div>
-      <div class="transition box">
-        <span class="to"><img alt="to-btn" src="icons/to.svg" />Edit</span>
-        <span class="del">
-          <img alt="del-btn" src="icons/del.svg" />
-          <font color="#ddd">Delete</font>
-        </span>
-      </div>
-    </div>`;
+        <div class="his-box box" data-id="${id}">
+          <input disabled class="his-text" value="${text}">
+          <div class="mini-ham">
+            <img alt="more" src="icons/mini-ham.svg" />
+          </div>
+          <div class="transition box">
+            <span class="to"><img alt="to-btn" src="icons/to.svg" />Edit</span>
+            <span class="del">
+              <img alt="del-btn" src="icons/del.svg" />
+              <font color="#ddd">Delete</font>
+            </span>
+          </div>
+        </div>`;
 };
 
 const generateId = () => {
   return Date.now().toString() + Math.random().toString(36).substring(2);
 };
-showSparkles;
+
 const addDiv = () => {
   const message = input.value.trim();
 
@@ -402,7 +406,6 @@ const addDiv = () => {
     }
 
     chatBox.appendChild(user);
-    form.style.transform = "translateY(0)";
     input.value = "";
     heading.classList.add("hide");
 
@@ -432,9 +435,22 @@ const addDiv = () => {
         return false;
       };
 
-      const textForHistory = isRandom(message) ? "New Chat" : message;
+      const chatsNameArr = [
+        "New Chat",
+        "User input clarification",
+        "User input Check",
+        "Random Text Check",
+      ];
 
-      history.innerHTML += createHistoryBox(id, textForHistory);
+      const random = Math.floor(Math.random() * chatsNameArr.length);
+
+      const RandomChats = chatsNameArr[random];
+
+      const textForHistory = isRandom(message) ? RandomChats : message;
+
+      if (isImageGenerator === false) {
+        history.innerHTML += createHistoryBox(id, textForHistory);
+      }
 
       const oldHistory = JSON.parse(
         localStorage.getItem("chatHistory") || "[]"
@@ -449,9 +465,8 @@ const addDiv = () => {
   }
 };
 
-up.addEventListener("click", (e) => {
+const upEvents = () => {
   e.preventDefault();
-
   picker.style.height = "0";
   picker.style.opacity = "0";
   picker.style.scale = "0";
@@ -464,18 +479,18 @@ up.addEventListener("click", (e) => {
   base64Image = null;
 
   input.focus();
-});
+};
 
 form.addEventListener("click", () => {
   input.focus();
 });
 
+up.addEventListener("click", upEvents);
+
 document.addEventListener("keyup", (e) => {
   if (e.key === "Enter") {
     addDiv();
-    picker.style.height = "0";
-    picker.style.opacity = "0";
-    picker.style.scale = "0";
+    upEvents;
   } else if (e.key === "/") {
     input.focus();
   } else if (e.ctrlKey && e.key.toLowerCase() === "b") {
