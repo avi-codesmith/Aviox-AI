@@ -10,6 +10,8 @@
 
 # ✨ Features
 
+## - 🖼️ Generate Images by prompts
+
 ## - 🧠 Interactive AI-based conversation
 
 ## - ⚡ Fast and responsive interface
