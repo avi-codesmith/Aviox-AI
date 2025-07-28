@@ -27,6 +27,7 @@ const emojiBtn = document.getElementById("inputContainer");
 const imageGenerator = document.querySelector(".image-generator");
 const randomButton = document.querySelector(".random-btn");
 const main = document.querySelector(".main");
+const chatBot = document.querySelector(".chatbot");
 
 let allowed = true;
 let firstMessageAdded = false;
@@ -58,6 +59,21 @@ const imageGeneratorHeadings = [
   "Write a prompt with Aviox!",
 ];
 
+const enhancedWidth = () => {
+  input.addEventListener("input", () => {
+    if (input.scrollHeight >= 25) {
+      console.log("EnhancedTheWidth");
+      input.style.height = "10rem";
+    }
+    if (input.scrollHeight >= 192) {
+      input.style.height = "20rem";
+      console.log("yo");
+    }
+  });
+};
+
+enhancedWidth();
+
 function showSparkles(event) {
   const sparkleContainer = document.querySelector(".sparkle-container");
   sparkleContainer.innerHTML = "";
@@ -74,18 +90,38 @@ function showSparkles(event) {
   sparkleContainer.appendChild(img);
 }
 
+chatBot.addEventListener("click", (e) => {
+  e.preventDefault();
+  isImageGenerator = false;
+  loader.style.opacity = "1";
+  if (isImageGenerator === false) {
+    setTimeout(() => {
+      loader.style.opacity = "0";
+    }, 1000);
+    input.style.height = "2.4rem";
+    newChatBtn.click();
+    heading.classList.remove("gradient");
+    up.classList.remove("gradientBg");
+    history.style.display = "block";
+    fileButton.style.display = "block";
+    emojiBtn.style.display = "flex";
+    randomButton.style.display = "none";
+    input.placeholder = "Ask anything";
+    heading.textContent = headings[Math.floor(Math.random() * headings.length)];
+  }
+});
+
 imageGenerator.addEventListener("click", () => {
   isImageGenerator = true;
   console.log(isImageGenerator);
-  if (isImageGenerator == true) {
-    history.innerHTML = "";
-    console.log(history);
+  if (isImageGenerator) {
+    input.style.height = "2.4rem";
 
-    console.log(isImageGenerator);
     newChatBtn.click();
     heading.classList.add("gradient");
     up.classList.add("gradientBg");
-    if (fileButton && emojiBtn && input && randomButton) {
+    if (fileButton && emojiBtn && input && randomButton && history) {
+      history.style.display = "none";
       fileButton.style.display = "none";
       emojiBtn.style.display = "none";
       randomButton.style.display = "flex";
@@ -95,9 +131,15 @@ imageGenerator.addEventListener("click", () => {
       imageGeneratorHeadings[
         Math.floor(Math.random() * imageGeneratorHeadings.length)
       ];
+
     randomButton.addEventListener("click", () => {
+      for (let i = 0; i < imagePrompt.length; i++) {
+        if (!imagePrompt[i].includes(".")) {
+          imagePrompt[i] += ".";
+        }
+      }
       const random = Math.floor(Math.random() * imagePrompt.length);
-      input.value = imagePrompt[random]; // ✅ Only one prompt shown at a time
+      input.value = imagePrompt[random];
     });
   }
   showSparkles(event);
@@ -360,7 +402,6 @@ async function getAnswer({ message, base64Image, botText, bot }) {
   }
   base64Image = null;
 }
-
 const createHistoryBox = (id, text) => {
   return `
         <div class="his-box box" data-id="${id}">
@@ -384,6 +425,7 @@ const generateId = () => {
 
 const addDiv = () => {
   const message = input.value.trim();
+  input.style.height = "2.4rem";
 
   if (message !== "" || base64Image) {
     const user = document.createElement("div");
@@ -465,7 +507,7 @@ const addDiv = () => {
   }
 };
 
-const upEvents = () => {
+const upEvents = (e) => {
   e.preventDefault();
   picker.style.height = "0";
   picker.style.opacity = "0";

@@ -69,7 +69,7 @@
                 <div class="image-generator">
                   <a>Image Generator A.2</a>
                 </div>
-                <div>
+                <div class="chatbot">
                   <a href="index.html">Aviox AI</a>
                 </div>
               </div>
@@ -84,21 +84,28 @@
         <form action="#" class="box">
           <textarea placeholder="Ask anything" class="input"></textarea>
           <div class="btn-wrapper">
-            <div id="inputContainer">
-              <button class="emoji btn" id="toggleButton" type="button">
-                <img src="icons/smile.svg" />
-              </button>
-              <emoji-picker id="picker"></emoji-picker>
-            </div>
-            <div class="file">
-              <input type="file" accept="images/*" class="file-input" hidden />
-              <button class="link btn">
-                <img src="icons/add-img.svg" />
-              </button>
-            </div>
-            <div class="random-btn">
-              <img src="icons/random.svg" />
-              <p>Random</p>
+            <div class="main-btns">
+              <div id="inputContainer">
+                <button class="emoji btn" id="toggleButton" type="button">
+                  <img src="icons/smile.svg" />
+                </button>
+                <emoji-picker id="picker"></emoji-picker>
+              </div>
+              <div class="file">
+                <input
+                  type="file"
+                  accept="images/*"
+                  class="file-input"
+                  hidden
+                />
+                <button class="link btn">
+                  <img src="icons/add-img.svg" />
+                </button>
+              </div>
+              <div class="random-btn">
+                <img src="icons/random.svg" />
+                <p>Random</p>
+              </div>
             </div>
             <button class="up btn black">
               <img src="icons/up.svg" />

@@ -1,6 +1,6 @@
 # 🤖 Aviox AI – Smart Chatbot
 
-<img src="https://github.com/user-attachments/assets/3096661c-7104-44d7-a755-a74f76647a98" alt="Aviox AI" width="300" />
+![Black And White Simple Personal Business Card (1)](https://github.com/user-attachments/assets/3096661c-7104-44d7-a755-a74f76647a98)
 
 ## Aviox AI is an intelligent chatbot built to simulate natural conversations and assist users with information, tasks, or entertainment. Designed with a clean interface and responsive behavior, it’s hosted on Netlify and ready to use in your browser.
 
@@ -9,8 +9,6 @@
 ## 🔗 [Click here to use Aviox AI](https://aviox.netlify.app/)
 
 # ✨ Features
-
-## - 🖼️ Generate Images by prompts
 
 ## - 🧠 Interactive AI-based conversation
 
