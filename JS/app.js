@@ -61,13 +61,15 @@ const imageGeneratorHeadings = [
 
 const enhancedWidth = () => {
   input.addEventListener("input", () => {
-    if (input.scrollHeight >= 25) {
-      console.log("EnhancedTheWidth");
-      input.style.height = "10rem";
-    }
-    if (input.scrollHeight >= 192) {
-      input.style.height = "20rem";
-      console.log("yo");
+    console.log(input.value);
+    console.log(input.scrollHeight);
+    if (input.value.trim() !== "") {
+      console.log(input.scrollWidth);
+      if (input.scrollHeight * 2 > input.scrollWidth / 8) {
+        input.style.height = "10rem";
+      } else {
+        input.style.height = "2.4rem";
+      }
     }
   });
 };
@@ -361,6 +363,51 @@ hamIcon.forEach((e) => e.addEventListener("click", classToggle));
 dull.addEventListener("click", classToggle);
 
 async function getAnswer({ message, base64Image, botText, bot }) {
+  if (isImageGenerator === true) {
+    const getImage = async () => {
+      const api_url =
+        "https://router.huggingface.co/nebius/v1/images/generations";
+
+      try {
+        const response = await fetch(api_url, {
+          headers: {
+            Authorization: `Bearer ${api_img_key}`,
+            "Content-Type": "application/json",
+            "x-use-cache": "false",
+          },
+          method: "POST",
+          body: JSON.stringify({
+            inputs: message,
+            parameters: { width, height },
+            options: { wait_for_model: true, user_cache: false },
+          }),
+        });
+
+        const data = await response.json();
+
+        const imageUrl =
+          data.generated_image || data[0]?.url || data?.data[0]?.url;
+
+        if (imageUrl) {
+          console.log("Image URL:", imageUrl);
+          const img = document.createElement("img");
+          img.src = imageUrl;
+          document.body.appendChild(img);
+        } else {
+          console.error("Image URL not found in response", data);
+        }
+      } catch (error) {
+        console.log("Image generation failed:", error);
+      }
+    };
+    getImage();
+
+    document.createElement("div");
+    dispatchEvent.classList.add("img-box");
+
+    return;
+  }
+
   try {
     const content = [{ type: "text", text: message }];
     if (base64Image) {
@@ -396,12 +443,15 @@ async function getAnswer({ message, base64Image, botText, bot }) {
     } else {
       error(botText);
     }
+
     chatScroll.scrollTop = chatBox.scrollHeight;
   } catch (e) {
     error(botText);
   }
+
   base64Image = null;
 }
+
 const createHistoryBox = (id, text) => {
   return `
         <div class="his-box box" data-id="${id}">
@@ -456,7 +506,11 @@ const addDiv = () => {
 
     const botText = document.createElement("div");
     botText.classList.add("text", "bg2");
-    botText.textContent = "Thinking...";
+    if (isImageGenerator === false) {
+      botText.textContent = "Thinking...";
+    } else {
+      botText.textContent = "Generating an Image...";
+    }
 
     bot.appendChild(botText);
     chatBox.appendChild(bot);

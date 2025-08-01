@@ -366,6 +366,7 @@ body {
   left: 2%;
   opacity: 1;
   transition: all 0.1s ease;
+  z-index: 9;
 }
 
 /* .d-hidden.opacity {
@@ -703,13 +704,13 @@ textarea::-webkit-scrollbar-thumb {
 .random-btn {
   font-size: 1.6rem;
   color: #b172ff;
-  display: flex;
   gap: 1rem;
   padding: 0.6rem 1rem;
   border-radius: 2rem;
   cursor: pointer;
   transition: all 0.3s ease;
   display: none;
+  align-items: center;
 }
 
 .random-btn:hover {
@@ -769,6 +770,10 @@ textarea::-webkit-scrollbar-thumb {
   background-color: #222;
   font-size: 1.6rem;
   cursor: pointer;
+}
+
+.img-box {
+  background-color: red;
 }
 
 @keyframes sparkleFly {
