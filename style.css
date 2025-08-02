@@ -41,10 +41,13 @@ body {
 }
 
 .loader img {
-  animation: round 2s ease-in-out infinite;
   height: 12rem;
   width: 12rem;
   filter: invert(1);
+}
+
+.round {
+  animation: round 2s ease-in-out infinite;
 }
 
 @keyframes round {
@@ -699,7 +702,7 @@ textarea::-webkit-scrollbar-thumb {
   border-radius: 4rem 0 4rem 4rem !important;
 }
 
-/* for Aviox img generator */
+/* for Aviox img generator A.2*/
 
 .random-btn {
   font-size: 1.6rem;
@@ -711,6 +714,7 @@ textarea::-webkit-scrollbar-thumb {
   transition: all 0.3s ease;
   display: none;
   align-items: center;
+  user-select: none;
 }
 
 .random-btn:hover {

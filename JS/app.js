@@ -28,6 +28,7 @@ const imageGenerator = document.querySelector(".image-generator");
 const randomButton = document.querySelector(".random-btn");
 const main = document.querySelector(".main");
 const chatBot = document.querySelector(".chatbot");
+const loaderIcon = document.querySelector(".loader img");
 
 let allowed = true;
 let firstMessageAdded = false;
@@ -96,9 +97,13 @@ chatBot.addEventListener("click", (e) => {
   e.preventDefault();
   isImageGenerator = false;
   loader.style.opacity = "1";
+  loader.style.pointerEvents = "auto";
+  loaderIcon.classList.add("round");
   if (isImageGenerator === false) {
     setTimeout(() => {
       loader.style.opacity = "0";
+      loaderIcon.classList.remove("round");
+      loader.style.pointerEvents = "none";
     }, 1000);
     input.style.height = "2.4rem";
     newChatBtn.click();
