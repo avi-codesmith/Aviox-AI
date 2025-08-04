@@ -780,6 +780,12 @@ textarea::-webkit-scrollbar-thumb {
   background-color: red;
 }
 
+.generated-img {
+  height: 32rem;
+  width: 32rem;
+  object-fit: cover;
+  border-radius: 1rem;
+}
 @keyframes sparkleFly {
   0% {
     transform: translate(0, 0) scale(2);

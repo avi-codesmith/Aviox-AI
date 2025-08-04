@@ -370,46 +370,44 @@ dull.addEventListener("click", classToggle);
 async function getAnswer({ message, base64Image, botText, bot }) {
   if (isImageGenerator === true) {
     const getImage = async () => {
-      const api_url =
-        "https://router.huggingface.co/nebius/v1/images/generations";
+      const apiUrl = "https://clipdrop-api.co/text-to-image/v1";
 
       try {
-        const response = await fetch(api_url, {
-          headers: {
-            Authorization: `Bearer ${api_img_key}`,
-            "Content-Type": "application/json",
-            "x-use-cache": "false",
-          },
+        const form = new FormData();
+        form.append("prompt", message);
+
+        console.log(imgAPI);
+        const response = await fetch(apiUrl, {
           method: "POST",
-          body: JSON.stringify({
-            inputs: message,
-            parameters: { width, height },
-            options: { wait_for_model: true, user_cache: false },
-          }),
+          headers: {
+            "x-api-key": imgAPI,
+          },
+          body: form,
         });
 
-        const data = await response.json();
-
-        const imageUrl =
-          data.generated_image || data[0]?.url || data?.data[0]?.url;
-
-        if (imageUrl) {
-          console.log("Image URL:", imageUrl);
-          const img = document.createElement("img");
-          img.src = imageUrl;
-          document.body.appendChild(img);
-        } else {
-          console.error("Image URL not found in response", data);
+        if (!response.ok) {
+          const err = await response.json();
+          console.error("API error response", err);
+          botText.textContent = "Failed to generate image";
+          return;
         }
+
+        const blob = await response.blob();
+        const imageUrl = URL.createObjectURL(blob);
+
+        botText.textContent = "";
+        const img = document.createElement("img");
+        img.src = imageUrl;
+        img.classList.add("generated-img");
+        botText.appendChild(img);
+        bot.classList.add("stop");
       } catch (error) {
-        console.log("Image generation failed:", error);
+        console.error("Image generation failed:", error);
+        botText.textContent = "Error generating image";
       }
     };
+
     getImage();
-
-    document.createElement("div");
-    dispatchEvent.classList.add("img-box");
-
     return;
   }
 
@@ -575,7 +573,9 @@ const upEvents = (e) => {
   addDiv();
 
   const selectedImage = document.querySelector(".selectedImage");
-  selectedImage.remove();
+  if (selectedImage) {
+    selectedImage.remove();
+  }
 
   base64Image = null;
 
