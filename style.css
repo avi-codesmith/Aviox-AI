@@ -41,6 +41,8 @@ body {
 }
 
 .loader img {
+  transition: all 0.2s ease;
+
   height: 12rem;
   width: 12rem;
   filter: invert(1);
@@ -781,11 +783,35 @@ textarea::-webkit-scrollbar-thumb {
 }
 
 .generated-img {
-  height: 32rem;
-  width: 32rem;
-  object-fit: cover;
+  height: 40rem;
+  width: 40rem;
   border-radius: 1rem;
 }
+
+.text {
+  position: relative;
+}
+
+.text a {
+  color: #ddd;
+}
+
+.download-icon {
+  height: 4rem;
+  width: 4rem;
+  padding: 0.6rem;
+  border-radius: 1rem;
+  background-color: rgba(0, 0, 0, 0.41);
+  position: absolute;
+  bottom: 15px;
+  right: 10px;
+  transition: all 0.2s ease-in-out;
+}
+
+.download-icon:hover {
+  background-color: rgba(0, 0, 0, 0.79);
+}
+
 @keyframes sparkleFly {
   0% {
     transform: translate(0, 0) scale(2);
