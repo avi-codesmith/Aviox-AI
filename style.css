@@ -17,13 +17,13 @@ html {
 body {
   position: relative;
   font-family: "Poppins";
-  background-color: #fff;
+  background-color: #101010;
   color: #e0e0e0;
   overflow: hidden;
 }
 
 .box {
-  background-color: #222;
+  background-color: #6f6c6c3c;
 }
 
 .loader {
@@ -72,7 +72,7 @@ body {
   height: 100vh;
   transition: grid-template-columns 0.3s ease;
   pointer-events: none;
-  background-color: black;
+  background-color: #0000003c;
 }
 
 .container.jump {
@@ -80,7 +80,7 @@ body {
 }
 
 .nav {
-  background-color: #161616;
+  /* background-color: #6f6c6c3c; */
   height: 100%;
   padding: 0;
   width: 100%;
@@ -235,11 +235,12 @@ body {
   transform: translate(-50%, -50%);
   opacity: 1;
   pointer-events: none;
+  user-select: none;
 }
 
 .open-box img {
-  height: 500rem;
-  width: 500rem;
+  height: 10rem;
+  width: 10rem;
   filter: brightness(30%) saturate(0%);
 }
 
@@ -363,6 +364,10 @@ body {
   bottom: 2%;
   font-size: 1.4rem;
   color: #aaa;
+}
+
+.theme {
+  background-color: #fff;
 }
 
 .d-hidden {
@@ -567,18 +572,23 @@ textarea::-webkit-scrollbar-thumb {
   cursor: pointer;
 }
 
-.new {
+.right-div {
   position: fixed;
   top: 2%;
   right: 2%;
   z-index: 9;
-  cursor: pointer;
   background-color: #101010;
   border-radius: 1rem;
   padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
 }
 
-.new img {
+.new,
+.theme-btn {
+  cursor: pointer;
   height: 3.2rem;
   width: 3.2rem;
   filter: invert(1);
