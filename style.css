@@ -23,7 +23,7 @@ body {
 }
 
 .box {
-  background-color: #6f6c6c3c;
+  background-color: #191919;
 }
 
 .loader {
@@ -72,7 +72,6 @@ body {
   height: 100vh;
   transition: grid-template-columns 0.3s ease;
   pointer-events: none;
-  background-color: #0000003c;
 }
 
 .container.jump {
@@ -80,7 +79,7 @@ body {
 }
 
 .nav {
-  /* background-color: #6f6c6c3c; */
+  background-color: #121212;
   height: 100%;
   padding: 0;
   width: 100%;
@@ -366,10 +365,6 @@ body {
   color: #aaa;
 }
 
-.theme {
-  background-color: #fff;
-}
-
 .d-hidden {
   position: fixed;
   top: 2%;
@@ -586,8 +581,7 @@ textarea::-webkit-scrollbar-thumb {
   gap: 2rem;
 }
 
-.new,
-.theme-btn {
+.new {
   cursor: pointer;
   height: 3.2rem;
   width: 3.2rem;
@@ -676,7 +670,7 @@ textarea::-webkit-scrollbar-thumb {
   left: -100%;
 
   --box-shadow: 0 5px 24px #fff;
-  --background: #222;
+  --background: #191919;
   --category-button-color: white;
   --category-button-active-color: yellow;
   --search-input-color: white;

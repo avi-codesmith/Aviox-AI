@@ -29,7 +29,6 @@ const randomButton = document.querySelector(".random-btn");
 const main = document.querySelector(".main");
 const chatBot = document.querySelector(".chatbot");
 const loaderIcon = document.querySelector(".loader img");
-const themeBtn = document.querySelector(".theme-btn");
 const bodyEl = document.querySelector("body");
 
 let allowed = true;
@@ -61,18 +60,6 @@ const imageGeneratorHeadings = [
   "Let’s create your vision with Aviox!",
   "Write a prompt with Aviox!",
 ];
-
-const changeTheme = () => {
-  main.classList.toggle("theme");
-  dull.classList.toggle("theme");
-  bodyEl.classList.toggle("theme");
-  if (themeBtn.src.includes("moon.svg")) {
-    themeBtn.src = "icons/sun.svg";
-  } else {
-    themeBtn.src = "icons/moon.svg";
-  }
-};
-themeBtn.addEventListener("click", changeTheme);
 
 const enhancedWidth = () => {
   input.addEventListener("input", () => {
